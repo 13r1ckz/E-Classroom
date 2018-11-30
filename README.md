@@ -1,4 +1,4 @@
-# e-clasroom display
+# E-Classroom display
 
 This code needs:
 -
@@ -7,14 +7,14 @@ This code needs:
 -
 -
 
-on this git you can find the files you need to setup the server and the files you need to flash on the device
+On this git you can find the files you need to setup the server and the files you need to flash on the device
 
-# instalation
+# Installation
 
 
-# usage
-the module will update at time intervals.
-it will send a message to the server and reseave the data it needs.
-then it will display the data. 
+# Usage
+The module will update at time intervals.
+It will send a message to the server and reseave the data it needs.
+Then it will display the data. 
 All you have to-do is look at it.
 
