@@ -1,7 +1,7 @@
 # E-Classroom display
 
 This code needs:
--
+- open SDK (https://github.com/pfalcon/esp-open-sdk)
 -
 -
 -
