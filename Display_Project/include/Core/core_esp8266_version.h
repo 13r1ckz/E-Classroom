@@ -22,7 +22,7 @@
 #ifndef __CORE_ESP8266_VERSION_H
 #define __CORE_ESP8266_VERSION_H
 
-#include <core_version.h>
+#include <Core\core_version.h>
 
 #define STRHELPER(x) #x
 #define STR(x) STRHELPER(x)

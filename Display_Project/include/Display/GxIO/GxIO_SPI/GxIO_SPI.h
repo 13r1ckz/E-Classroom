@@ -5,7 +5,7 @@
 #ifndef _GxIO_SPI_H_
 #define _GxIO_SPI_H_
 
-#include <SPI.h>
+#include <Core\SPI.h>
 #include "../GxIO.h"
 
 class GxIO_SPI : public GxIO

@@ -12,14 +12,14 @@ String teacher1;
 String teacher2;
 
 
-void initDisplay(){
+void Scherm::initDisplay(){
 	ePaper.init(115200);
 	ePaper.eraseDisplay(true);
 }
-void updateDisplay(){
+void Scherm::updateDisplay(){
 	ePaper.drawPaged(drawDisplay);
 }
-void drawDisplay(){
+void Scherm::drawDisplay(){
 	Serial.println("hoi");
 	ePaper.drawLine(0, 149, 600, 149, GxEPD_BLACK);
 	ePaper.drawLine(0, 150, 600, 150, GxEPD_BLACK);
@@ -53,27 +53,27 @@ void drawDisplay(){
 	ePaper.setCursor(xPosition, 420);
 	ePaper.println("Hakvoort, Gido");
 }
-void setLokaal(String name){
+void Scherm::setLokaal(String name){
 	lokaal = name;
 }
-void setLokaalText(String name){
+void Scherm::setLokaalText(String name){
 	lokaalText = name;
 }
-void setTime1(String name){
+void Scherm::setTime1(String name){
 	time1 = name;
 }
-void setTime2(String name){
+void Scherm::setTime2(String name){
 	time2 = name;
 }
-void setLecture1(String name){
+void Scherm::setLecture1(String name){
 	lecture1 = name;
 }
-void setLecture2(String name){
+void Scherm::setLecture2(String name){
 	lecture2 = name; 
 }
-void setTecher1(String name){
+void Scherm::setTecher1(String name){
 	teacher1 = name;
 }
-void setTecher2(String name){
+void Scherm::setTecher2(String name){
 	teacher2 = name;
 }

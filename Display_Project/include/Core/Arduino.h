@@ -255,7 +255,7 @@ const int TIM_DIV265 __attribute__((deprecated, weak)) = TIM_DIV256;
 #ifdef __cplusplus
 
 #include <algorithm>
-#include <pgmspace.h>
+#include <core/pgmspace.h>
 
 #include "WCharacter.h"
 #include "WString.h"
@@ -299,7 +299,7 @@ extern "C" void configTime(long timezone, int daylightOffset_sec,
 
 #endif
 
-#include "pins_arduino.h"
+#include <Core/pins_arduino.h>
 
 #endif
 

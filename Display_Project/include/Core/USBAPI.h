@@ -21,9 +21,9 @@
 #define __USBAPI__
 
 #include <inttypes.h>
-#include <avr/pgmspace.h>
-#include <avr/eeprom.h>
-#include <avr/interrupt.h>
+#include <Core/avr/pgmspace.h>
+#include <Core/avr/eeprom.h>
+#include <Core/avr/interrupt.h>
 #include <util/delay.h>
 
 typedef unsigned char u8;

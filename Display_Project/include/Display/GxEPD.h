@@ -13,10 +13,10 @@
 #ifndef _GxEPD_H_
 #define _GxEPD_H_
 
-#include <Arduino.h>
-#include <SPI.h>
+#include <Core/Arduino.h>
+#include <Core/SPI.h>
 #include "GxIO/GxIO.h"
-#include <Adafruit_GFX.h>
+#include <Display/Adafruit_GFX.h>
 #include "GxFont_GFX.h"
 
 // the only colors supported by any of these displays; mapping of other colors is class specific

@@ -30,7 +30,7 @@ extern "C" {
  * Also, prefer to have eboot standalone as much as possible and have the core depend on it
  * rather than have eboot depend on the core.
  */
-#include <../../bootloaders/eboot/flash.h>
+#include <core/flash.h>
 
 
 #ifdef __cplusplus

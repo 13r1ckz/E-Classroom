@@ -21,7 +21,7 @@
 #ifndef ESP_H
 #define ESP_H
 
-#include <Arduino.h>
+#include <Core/Arduino.h>
 
 /**
  * AVR macros for WDT managment

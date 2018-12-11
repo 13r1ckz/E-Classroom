@@ -2,7 +2,9 @@
 #include <ets_sys.h>
 #include <osapi.h>
 #include <os_type.h>
+#include "driver/scherm.h"
 
+Scherm S;
 
 //C Library's
 extern "C"{
@@ -27,6 +29,7 @@ LOCAL uint8_t led_state=0;
 LOCAL void ICACHE_FLASH_ATTR blink_cb(void *arg){
 	GPIO_OUTPUT_SET(LED_GPIO, led_state);
 	led_state ^=1;
+	//S.initDisplay();
 }
 
 /******************************************************************************
@@ -86,4 +89,8 @@ extern "C" void ICACHE_FLASH_ATTR user_init(void){
 	os_timer_setfn(&blink_timer, (os_timer_func_t *)blink_cb, (void *)0);
 	// void os_timer_arm(ETSTimer *ptimer,uint32_t milliseconds, bool repeat_flag)
 	os_timer_arm(&blink_timer, DELAY, 1);
+
+	while(1){
+
+	}
 }

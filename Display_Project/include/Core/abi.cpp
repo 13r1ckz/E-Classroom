@@ -18,8 +18,8 @@
 
 #include <stdlib.h>
 #include <assert.h>
-#include <debug.h>
-#include <Arduino.h>
+#include <Core/debug.h>
+#include <Core/Arduino.h>
 #include <cxxabi.h>
 
 using __cxxabiv1::__guard;

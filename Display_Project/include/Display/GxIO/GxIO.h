@@ -5,7 +5,7 @@
 #ifndef _GxIO_H_
 #define _GxIO_H_
 
-#include <Arduino.h>
+#include <Core\Arduino.h>
 
 class GxIO
 {

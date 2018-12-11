@@ -3,14 +3,11 @@
 
 #if !defined(__AVR_ATtiny85__) // NOT A CHANCE of this stuff working on ATtiny
 
-#if ARDUINO >= 100
- #include "Arduino.h"
- #include "Print.h"
-#else
- #include "WProgram.h"
-#endif
-#include <SPI.h>
-#include "Adafruit_GFX.h"
+
+#include <Core/Arduino.h>
+#include <Core/Print.h>
+#include <Core/SPI.h>
+#include <Display/Adafruit_GFX.h>
 
 #define USE_FAST_PINIO
 
