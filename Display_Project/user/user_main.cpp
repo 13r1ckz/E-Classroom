@@ -1,37 +1,31 @@
-
 #include <ets_sys.h>
 #include <osapi.h>
 #include <os_type.h>
+#include <gpio.h>
 #include "driver/scherm.h"
+#define DELAY 1000 /* milliseconds */
 
-Scherm S;
+// =============================================================================================
+// C includes and declarations
+// =============================================================================================
+extern "C"
+{
+#include <user_interface.h>
+void *pvPortMalloc( size_t xWantedSize );
+void vPortFree( void *pv );
+void *pvPortZalloc(size_t size);
 
-//C Library's
-extern "C"{
-	#include "user_interface.h"
-	#include <gpio.h>
+// declare lib methods
+extern int ets_uart_printf(const char *fmt, ...);
+void ets_timer_disarm(ETSTimer *ptimer);
+void ets_timer_setfn(ETSTimer *ptimer, ETSTimerFunc *pfunction, void *parg);
+void ets_timer_arm_new(ETSTimer *ptimer,uint32_t milliseconds, bool repeat_flag, bool);
 
-	void ets_timer_disarm(ETSTimer *ptimer);
-	void ets_timer_setfn(ETSTimer *ptimer, ETSTimerFunc *pfunction, void *parg);
-	void ets_timer_arm_new(ETSTimer *ptimer,uint32_t milliseconds, bool repeat_flag, bool);
+#define os_malloc   pvPortMalloc
+#define os_free     vPortFree
+#define os_zalloc   pvPortZalloc
 
-	// see eagle_soc.h for these definitions
-	#define LED_GPIO 2
-	#define LED_GPIO_MUX PERIPHS_IO_MUX_GPIO2_U
-	#define LED_GPIO_FUNC FUNC_GPIO2
-
-	#define DELAY 500 /* milliseconds */
 }
-
-LOCAL os_timer_t blink_timer;
-LOCAL uint8_t led_state=0;
-
-LOCAL void ICACHE_FLASH_ATTR blink_cb(void *arg){
-	GPIO_OUTPUT_SET(LED_GPIO, led_state);
-	led_state ^=1;
-	//S.initDisplay();
-}
-
 /******************************************************************************
  * FunctionName : user_rf_cal_sector_set
  * Description  : SDK just reversed 4 sectors, used for rf init data and paramters.
@@ -45,7 +39,8 @@ LOCAL void ICACHE_FLASH_ATTR blink_cb(void *arg){
  * Parameters   : none
  * Returns      : rf cal sector
 *******************************************************************************/
-extern "C" uint32 ICACHE_FLASH_ATTR user_rf_cal_sector_set(void){
+extern "C" uint32 user_rf_cal_sector_set(void)
+{
     enum flash_size_map size_map = system_get_flash_size_map();
     uint32 rf_cal_sec = 0;
 
@@ -76,21 +71,12 @@ extern "C" uint32 ICACHE_FLASH_ATTR user_rf_cal_sector_set(void){
     return rf_cal_sec;
 }
 
-void ICACHE_FLASH_ATTR user_rf_pre_init(void){
+extern "C" void user_rf_pre_init(void){
+
 }
 
-extern "C" void ICACHE_FLASH_ATTR user_init(void){
-	// Configure pin as a GPIO
-	PIN_FUNC_SELECT(LED_GPIO_MUX, LED_GPIO_FUNC);
-	// Set up a timer to blink the LED
-	// os_timer_disarm(ETSTimer *ptimer)
-	os_timer_disarm(&blink_timer);
-	// os_timer_setfn(ETSTimer *ptimer, ETSTimerFunc *pfunction, void *parg)
-	os_timer_setfn(&blink_timer, (os_timer_func_t *)blink_cb, (void *)0);
-	// void os_timer_arm(ETSTimer *ptimer,uint32_t milliseconds, bool repeat_flag)
-	os_timer_arm(&blink_timer, DELAY, 1);
+extern "C" void user_init(void){
+	Scherm S;
+	S.drawDisplay();
 
-	while(1){
-
-	}
 }

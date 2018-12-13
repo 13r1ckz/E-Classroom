@@ -1,4 +1,4 @@
-#include "scherm.h"
+#include "driver/scherm.h"
 
 GxIO_Class io(SPI, /*CS-D16*/ 16, /* DC-D4*/ 4, /*RST-D5*/ 5);
 GxEPD_Class ePaper(io, 5, 12 /*RST-D5*/ /*BUSY-D12*/);
