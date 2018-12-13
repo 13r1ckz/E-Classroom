@@ -44,10 +44,12 @@ class Display{
     void setLecture2(String name);
     void setTecher1(String name);
     void setTecher2(String name);
-  private:
     void drawDisplay();
+  //protected:
     void drawLines();
     void drawClassroom();
     void drawLecture1();
     void drawLecture2();
 };
+
+void drawDisplayCallback();

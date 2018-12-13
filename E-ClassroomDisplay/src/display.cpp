@@ -5,21 +5,20 @@
 /* Includes ------------------------------------------------------------------*/
 #include "display.h"
 
-Display display;
 GxIO_Class io(SPI, /*CS-D16*/ 2, /* DC-D4*/ 4, /*RST-D5*/ 5);
 GxEPD_Class ePaper(io, 5, 12 /*RST-D5*/ /*BUSY-D12*/);
 
 // ----------------------------------------------------------------------------
 // Global variables
 // ----------------------------------------------------------------------------
-String classroom;
-String classroomText;
-String time1;
-String time2;
-String lecture1;
-String lecture2;
-String teacher1;
-String teacher2;
+String classroom = "NON";
+String classroomText = "NON";
+String time1 = "NON";
+String time2 = "NON";
+String lecture1 = "NON";
+String lecture2 = "NON";
+String teacher1 = "NON";
+String teacher2 = "NON";
 
 // ----------------------------------------------------------------------------
 // Functions
@@ -29,7 +28,7 @@ void Display::initDisplay(){
 }
 
 void Display::updateDisplay(){
-	ePaper.drawPaged(drawDisplay);
+	ePaper.drawPaged(drawDisplayCallback);
 }
 
 void Display::setClassroom(String name){
@@ -66,7 +65,9 @@ void Display::setTecher2(String name){
 
 void Display::drawLines(){
 	ePaper.drawRect(0, 149, 600, 3, GxEPD_BLACK);
+	ePaper.drawFastHLine(0, 150, 600, GxEPD_BLACK);
 	ePaper.drawRect(0, 299, 600, 3, GxEPD_BLACK);
+	ePaper.drawFastHLine(0, 300, 600, GxEPD_BLACK);
 }
 
 void Display::drawClassroom(){
@@ -106,8 +107,13 @@ void Display::drawLecture2(){
 }
 
 void Display::drawDisplay(){
-	display.drawLines();
-	display.drawClassroom();
-	display.drawLecture1();
-	display.drawLecture2();
+	this->drawLines();
+	this->drawClassroom();
+	this->drawLecture1();
+	this->drawLecture2();
+}
+
+void drawDisplayCallback(){
+	Display display;
+	display.drawDisplay();
 }
