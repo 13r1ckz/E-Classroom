@@ -1,3 +1,8 @@
+/******************************************************************************
+ * File : Display.h
+ ******************************************************************************/
+
+/* Includes ------------------------------------------------------------------*/
 #include <Arduino.h>
 //display libs
 #include <GxEPD.h>
@@ -15,7 +20,7 @@
 #include <Fonts/Roboto_Mono_Bold_48.h>
 #include <Fonts/Roboto_Mono_Bold_100.h>
 
-//defines
+/* Defines -------------------------------------------------------------------*/
 #define xOffSet 10
 #define firstLine 90
 #define secondLine 120
@@ -26,19 +31,23 @@
 #define seventhLine 390
 #define eigthLine 420
 
-class Display
-{
+/* Classes -------------------------------------------------------------------*/
+class Display{
   public:
     void initDisplay();
     void updateDisplay();
-    void setLokaal(String name);
-    void setLokaalText(String name);
+    void setClassroom(String name);
+    void setClassroomText(String name);
     void setTime1(String name);
     void setTime2(String name);
     void setLecture1(String name);
     void setLecture2(String name);
     void setTecher1(String name);
     void setTecher2(String name);
+  private:
+    void drawDisplay();
+    void drawLines();
+    void drawClassroom();
+    void drawLecture1();
+    void drawLecture2();
 };
-
-void drawDisplay();
