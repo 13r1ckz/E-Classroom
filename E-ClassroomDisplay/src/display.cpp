@@ -64,6 +64,7 @@ void Display::setTecher2(String name){
 }
 
 void Display::drawLines(){
+	ePaper.drawBitmap(gImage_windesheim, 440, 0, 160, 160, GxEPD_BLACK);
 	ePaper.drawRect(0, 149, 600, 3, GxEPD_BLACK);
 	ePaper.drawFastHLine(0, 150, 600, GxEPD_BLACK);
 	ePaper.drawRect(0, 299, 600, 3, GxEPD_BLACK);

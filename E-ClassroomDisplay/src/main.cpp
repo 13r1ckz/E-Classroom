@@ -17,7 +17,7 @@ void setup(){
   display.initDisplay();
   while(!Serial);
   display.updateDisplay();
-  main.setSleep(connection.getMin(), connection.getSec());
+  //main.setSleep(connection.getMin(), connection.getSec());
 }
 
 // ----------------------------------------------------------------------------

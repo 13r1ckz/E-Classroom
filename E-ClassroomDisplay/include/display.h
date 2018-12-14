@@ -22,7 +22,8 @@
 #include <Fonts/Roboto_Mono_26.h>
 #include <Fonts/Roboto_Mono_Bold_48.h>
 #include <Fonts/Roboto_Mono_Bold_100.h>
-
+//bitmap libs
+#include <imglib/windesheim.h>
 /* Defines -------------------------------------------------------------------*/
 #define xOffSet 10
 #define firstLine 90
