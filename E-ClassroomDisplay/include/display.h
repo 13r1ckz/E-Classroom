@@ -6,7 +6,10 @@
 #include <Arduino.h>
 //display libs
 #include <GxEPD.h>
-#include <GxGDEW0583T7/GxGDEW0583T7.h>
+//if b/w/r:
+#include <GxGDEW0583Z00/GxGDEW0583Z00.h>
+//if b/w:
+//#include <GxGDEW0583T7/GxGDEW0583T7.h>
 #include <GxFont_GFX.h>
 #include <GxIO/GxIO_SPI/GxIO_SPI.h>
 #include <GxIO/GxIO.h>
