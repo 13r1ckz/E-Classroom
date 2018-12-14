@@ -64,9 +64,12 @@ void Display::setTecher2(String name){
 }
 
 void Display::drawLines(){
-	ePaper.drawBitmap(gImage_windesheim, 440, 0, 160, 160, GxEPD_BLACK);
 	ePaper.fillRect(0, 149, 600, 3, GxEPD_BLACK);
 	ePaper.fillRect(0, 299, 600, 3, GxEPD_BLACK);
+}
+
+void Display::drawLogo(){
+	ePaper.drawBitmap(gImage_windesheim, 440, 0, 160, 160, GxEPD_BLACK);
 }
 
 void Display::drawClassroom(){
@@ -106,6 +109,7 @@ void Display::drawLecture2(){
 }
 
 void Display::drawDisplay(){
+	this->drawLogo();
 	this->drawLines();
 	this->drawClassroom();
 	this->drawLecture1();

@@ -51,6 +51,7 @@ class Display{
     void drawDisplay();
   //protected:
     void drawLines();
+    void drawLogo();
     void drawClassroom();
     void drawLecture1();
     void drawLecture2();
