@@ -1,6 +1,6 @@
-// class GxGDEW0583Z00 : Display class for GDEW0583Z00 e-Paper from Dalian Good Display Co., Ltd.: www.good-display.com
+// class GxGDEW0583Z21 : Display class for GDEW0583Z21 e-Paper from Dalian Good Display Co., Ltd.: www.good-display.com
 //
-// based on Demo Example from Good Display, available here: 
+// based on Demo Example from Good Display, available here: http://www.e-paper-display.com/download_detail/downloadsId=580.html
 // Controller: IL0371 : http://www.good-display.com/download_detail/downloadsId=536.html
 //
 // Author : J-M Zingg
@@ -11,41 +11,41 @@
 //
 // Library: https://github.com/ZinggJM/GxEPD
 
-#ifndef _GxGDEW0583Z00_H_
-#define _GxGDEW0583Z00_H_
+#ifndef _GxGDEW0583Z21_H_
+#define _GxGDEW0583Z21_H_
 
 #include "../GxEPD.h"
 
-#define GxGDEW0583Z00_WIDTH 600
-#define GxGDEW0583Z00_HEIGHT 448
+#define GxGDEW0583Z21_WIDTH 600
+#define GxGDEW0583Z21_HEIGHT 448
 
 // pixel number expressed in bytes; this is neither the buffer size nor the size of the buffer in the controller
-#define GxGDEW0583Z00_BYTE_SIZE (uint32_t(GxGDEW0583Z00_WIDTH) * uint32_t(GxGDEW0583Z00_HEIGHT) / 8)
+#define GxGDEW0583Z21_BYTE_SIZE (uint32_t(GxGDEW0583Z21_WIDTH) * uint32_t(GxGDEW0583Z21_HEIGHT) / 8)
 
-// divisor for AVR or limited RAM, should be factor of GxGDEW0583Z00_HEIGHT
+// divisor for AVR or limited RAM, should be factor of GxGDEW0583Z21_HEIGHT
 // add conditional case if the compiler complains for your target
 #if defined(__AVR)
-//#define GxGDEW0583Z00_PAGES 48
-#define GxGDEW0583Z00_PAGES 64
+//#define GxGDEW0583Z21_PAGES 48
+#define GxGDEW0583Z21_PAGES 64
 #elif defined(ESP8266)
-#define GxGDEW0583Z00_PAGES 2
+#define GxGDEW0583Z21_PAGES 2
 #elif defined(ARDUINO_ARCH_STM32F1)
-#define GxGDEW0583Z00_PAGES 7
+#define GxGDEW0583Z21_PAGES 7
 #else
-#define GxGDEW0583Z00_PAGES 1 // e.g. ESP32
+#define GxGDEW0583Z21_PAGES 1 // e.g. ESP32
 #endif
 
-#define GxGDEW0583Z00_PAGE_HEIGHT (GxGDEW0583Z00_HEIGHT / GxGDEW0583Z00_PAGES)
-#define GxGDEW0583Z00_PAGE_SIZE (GxGDEW0583Z00_BYTE_SIZE / GxGDEW0583Z00_PAGES)
-#define GxGDEW0583Z00_BUFFER_SIZE GxGDEW0583Z00_PAGE_SIZE
+#define GxGDEW0583Z21_PAGE_HEIGHT (GxGDEW0583Z21_HEIGHT / GxGDEW0583Z21_PAGES)
+#define GxGDEW0583Z21_PAGE_SIZE (GxGDEW0583Z21_BYTE_SIZE / GxGDEW0583Z21_PAGES)
+#define GxGDEW0583Z21_BUFFER_SIZE GxGDEW0583Z21_PAGE_SIZE
 
-class GxGDEW0583Z00 : public GxEPD
+class GxGDEW0583Z21 : public GxEPD
 {
   public:
 #if defined(ESP8266)
-    GxGDEW0583Z00(GxIO& io, int8_t rst = 2, int8_t busy = 4);
+    GxGDEW0583Z21(GxIO& io, int8_t rst = 2, int8_t busy = 4);
 #else
-    GxGDEW0583Z00(GxIO& io, int8_t rst = 9, int8_t busy = 7);
+    GxGDEW0583Z21(GxIO& io, int8_t rst = 9, int8_t busy = 7);
 #endif
     void drawPixel(int16_t x, int16_t y, uint16_t color);
     void init(uint32_t serial_diag_bitrate = 0); // = 0 : disabled
@@ -69,7 +69,7 @@ class GxGDEW0583Z00 : public GxEPD
     void updateToWindow(uint16_t xs, uint16_t ys, uint16_t xd, uint16_t yd, uint16_t w, uint16_t h, bool using_rotation = true);
     // terminate cleanly updateWindow or updateToWindow before removing power or long delays
     void powerDown();
-    // paged drawing, for limited RAM, drawCallback() is called GxGDEW0583Z00_PAGES times
+    // paged drawing, for limited RAM, drawCallback() is called GxGDEW0583Z21_PAGES times
     // each call of drawCallback() should draw the same
     void drawPaged(void (*drawCallback)(void));
     void drawPaged(void (*drawCallback)(uint32_t), uint32_t);
@@ -97,8 +97,8 @@ class GxGDEW0583Z00 : public GxEPD
     void _send8pixel(uint8_t black_data, uint8_t red_data);
     void _rotate(uint16_t& x, uint16_t& y, uint16_t& w, uint16_t& h);
   private:
-    uint8_t _black_buffer[GxGDEW0583Z00_BUFFER_SIZE];
-    uint8_t _red_buffer[GxGDEW0583Z00_BUFFER_SIZE];
+    uint8_t _black_buffer[GxGDEW0583Z21_BUFFER_SIZE];
+    uint8_t _red_buffer[GxGDEW0583Z21_BUFFER_SIZE];
     GxIO& IO;
     int16_t _current_page;
     bool _using_partial_mode;
@@ -116,11 +116,11 @@ class GxGDEW0583Z00 : public GxEPD
 };
 
 #ifndef GxEPD_Class
-#define GxEPD_Class GxGDEW0583Z00
-#define GxEPD_WIDTH GxGDEW0583Z00_WIDTH
-#define GxEPD_HEIGHT GxGDEW0583Z00_HEIGHT
-#define GxEPD_BitmapExamples <GxGDEW0583Z00/BitmapExamples.h>
-#define GxEPD_BitmapExamplesQ "GxGDEW0583Z00/BitmapExamples.h"
+#define GxEPD_Class GxGDEW0583Z21
+#define GxEPD_WIDTH GxGDEW0583Z21_WIDTH
+#define GxEPD_HEIGHT GxGDEW0583Z21_HEIGHT
+#define GxEPD_BitmapExamples <GxGDEW0583Z21/BitmapExamples.h>
+#define GxEPD_BitmapExamplesQ "GxGDEW0583Z21/BitmapExamples.h"
 #endif
 
 #endif

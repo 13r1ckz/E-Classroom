@@ -7,7 +7,7 @@
 //display libs
 #include <GxEPD.h>
 //if b/w/r:
-#include <GxGDEW0583Z00/GxGDEW0583Z00.h>
+#include <GxGDEW0583Z21/GxGDEW0583Z21.h>
 //if b/w:
 //#include <GxGDEW0583T7/GxGDEW0583T7.h>
 #include <GxFont_GFX.h>

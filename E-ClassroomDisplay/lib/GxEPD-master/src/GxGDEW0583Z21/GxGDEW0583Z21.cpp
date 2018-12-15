@@ -1,6 +1,6 @@
-// class GxGDEW0583Z00 : Display class for GDEW0583Z00 e-Paper from Dalian Good Display Co., Ltd.: www.good-display.com
+// class GxGDEW0583Z21 : Display class for GDEW0583Z21 e-Paper from Dalian Good Display Co., Ltd.: www.good-display.com
 //
-// based on Demo Example from Good Display, available here: 
+// based on Demo Example from Good Display, available here: http://www.e-paper-display.com/download_detail/downloadsId=580.html
 // Controller: IL0371 : http://www.good-display.com/download_detail/downloadsId=536.html
 //
 // Author : J-M Zingg
@@ -11,7 +11,7 @@
 //
 // Library: https://github.com/ZinggJM/GxEPD
 
-#include "GxGDEW0583Z00.h"
+#include "GxGDEW0583Z21.h"
 
 //#define DISABLE_DIAGNOSTIC_OUTPUT
 
@@ -22,16 +22,16 @@
 #endif
 
 // Partial Update Delay, may have an influence on degradation
-#define GxGDEW0583Z00_PU_DELAY 500
+#define GxGDEW0583Z21_PU_DELAY 500
 
-GxGDEW0583Z00::GxGDEW0583Z00(GxIO& io, int8_t rst, int8_t busy)
-  : GxEPD(GxGDEW0583Z00_WIDTH, GxGDEW0583Z00_HEIGHT), IO(io),
+GxGDEW0583Z21::GxGDEW0583Z21(GxIO& io, int8_t rst, int8_t busy)
+  : GxEPD(GxGDEW0583Z21_WIDTH, GxGDEW0583Z21_HEIGHT), IO(io),
     _current_page(-1), _using_partial_mode(false), _diag_enabled(false),
     _rst(rst), _busy(busy)
 {
 }
 
-void GxGDEW0583Z00::drawPixel(int16_t x, int16_t y, uint16_t color)
+void GxGDEW0583Z21::drawPixel(int16_t x, int16_t y, uint16_t color)
 {
   if ((x < 0) || (x >= width()) || (y < 0) || (y >= height())) return;
 
@@ -40,27 +40,27 @@ void GxGDEW0583Z00::drawPixel(int16_t x, int16_t y, uint16_t color)
   {
     case 1:
       swap(x, y);
-      x = GxGDEW0583Z00_WIDTH - x - 1;
+      x = GxGDEW0583Z21_WIDTH - x - 1;
       break;
     case 2:
-      x = GxGDEW0583Z00_WIDTH - x - 1;
-      y = GxGDEW0583Z00_HEIGHT - y - 1;
+      x = GxGDEW0583Z21_WIDTH - x - 1;
+      y = GxGDEW0583Z21_HEIGHT - y - 1;
       break;
     case 3:
       swap(x, y);
-      y = GxGDEW0583Z00_HEIGHT - y - 1;
+      y = GxGDEW0583Z21_HEIGHT - y - 1;
       break;
   }
-  uint16_t i = x / 8 + y * GxGDEW0583Z00_WIDTH / 8;
+  uint16_t i = x / 8 + y * GxGDEW0583Z21_WIDTH / 8;
   if (_current_page < 1)
   {
     if (i >= sizeof(_black_buffer)) return;
   }
   else
   {
-    y -= _current_page * GxGDEW0583Z00_PAGE_HEIGHT;
-    if ((y < 0) || (y >= GxGDEW0583Z00_PAGE_HEIGHT)) return;
-    i = x / 8 + y * GxGDEW0583Z00_WIDTH / 8;
+    y -= _current_page * GxGDEW0583Z21_PAGE_HEIGHT;
+    if ((y < 0) || (y >= GxGDEW0583Z21_PAGE_HEIGHT)) return;
+    i = x / 8 + y * GxGDEW0583Z21_WIDTH / 8;
   }
 
   _black_buffer[i] = (_black_buffer[i] & (0xFF ^ (1 << (7 - x % 8)))); // white
@@ -78,7 +78,7 @@ void GxGDEW0583Z00::drawPixel(int16_t x, int16_t y, uint16_t color)
   }
 }
 
-void GxGDEW0583Z00::init(uint32_t serial_diag_bitrate)
+void GxGDEW0583Z21::init(uint32_t serial_diag_bitrate)
 {
   if (serial_diag_bitrate > 0)
   {
@@ -98,7 +98,7 @@ void GxGDEW0583Z00::init(uint32_t serial_diag_bitrate)
   _using_partial_mode = false;
 }
 
-void GxGDEW0583Z00::fillScreen(uint16_t color)
+void GxGDEW0583Z21::fillScreen(uint16_t color)
 {
   uint8_t black = 0x00;
   uint8_t red = 0x00;
@@ -114,13 +114,13 @@ void GxGDEW0583Z00::fillScreen(uint16_t color)
   }
 }
 
-void GxGDEW0583Z00::update(void)
+void GxGDEW0583Z21::update(void)
 {
   if (_current_page != -1) return;
   _using_partial_mode = false;
   _wakeUp();
   IO.writeCommandTransaction(0x10);
-  for (uint32_t i = 0; i < GxGDEW0583Z00_BYTE_SIZE; i++)
+  for (uint32_t i = 0; i < GxGDEW0583Z21_BYTE_SIZE; i++)
   {
     uint32_t idx = i % sizeof(_black_buffer);
     _send8pixel(_black_buffer[idx], _red_buffer[idx]);
@@ -130,18 +130,18 @@ void GxGDEW0583Z00::update(void)
   _sleep();
 }
 
-void  GxGDEW0583Z00::drawBitmap(const uint8_t *bitmap, uint16_t x, uint16_t y, uint16_t w, uint16_t h, uint16_t color, int16_t mode)
+void  GxGDEW0583Z21::drawBitmap(const uint8_t *bitmap, uint16_t x, uint16_t y, uint16_t w, uint16_t h, uint16_t color, int16_t mode)
 {
   if (mode & bm_default) mode |= bm_normal;
   drawBitmapBM(bitmap, x, y, w, h, color, mode);
 }
 
-void GxGDEW0583Z00::drawExamplePicture(const uint8_t* black_bitmap, const uint8_t* red_bitmap, uint32_t black_size, uint32_t red_size)
+void GxGDEW0583Z21::drawExamplePicture(const uint8_t* black_bitmap, const uint8_t* red_bitmap, uint32_t black_size, uint32_t red_size)
 {
   drawPicture(black_bitmap, red_bitmap, black_size, red_size, bm_normal);
 }
 
-void GxGDEW0583Z00::drawPicture(const uint8_t* black_bitmap, const uint8_t* red_bitmap, uint32_t black_size, uint32_t red_size, int16_t mode)
+void GxGDEW0583Z21::drawPicture(const uint8_t* black_bitmap, const uint8_t* red_bitmap, uint32_t black_size, uint32_t red_size, int16_t mode)
 {
   if (_current_page != -1) return;
   if (mode & bm_partial_update)
@@ -149,8 +149,8 @@ void GxGDEW0583Z00::drawPicture(const uint8_t* black_bitmap, const uint8_t* red_
     _using_partial_mode = true; // remember
     _wakeUp();
     IO.writeCommandTransaction(0x91); // partial in
-    _setPartialRamArea(0, 0, GxGDEW0583Z00_WIDTH - 1, GxGDEW0583Z00_HEIGHT - 1);
-    for (uint32_t i = 0; i < GxGDEW0583Z00_BYTE_SIZE; i++)
+    _setPartialRamArea(0, 0, GxGDEW0583Z21_WIDTH - 1, GxGDEW0583Z21_HEIGHT - 1);
+    for (uint32_t i = 0; i < GxGDEW0583Z21_BYTE_SIZE; i++)
     {
 #if defined(__AVR) || defined(ESP8266) || defined(ESP32)
       uint8_t black_data = (i < black_size) ? pgm_read_byte(&black_bitmap[i]) : 0x00;
@@ -172,7 +172,7 @@ void GxGDEW0583Z00::drawPicture(const uint8_t* black_bitmap, const uint8_t* red_
     _using_partial_mode = false; // remember
     _wakeUp();
     IO.writeCommandTransaction(0x10);
-    for (uint32_t i = 0; i < GxGDEW0583Z00_BYTE_SIZE; i++)
+    for (uint32_t i = 0; i < GxGDEW0583Z21_BYTE_SIZE; i++)
     {
 #if defined(__AVR) || defined(ESP8266) || defined(ESP32)
       uint8_t black_data = (i < black_size) ? pgm_read_byte(&black_bitmap[i]) : 0x00;
@@ -191,7 +191,7 @@ void GxGDEW0583Z00::drawPicture(const uint8_t* black_bitmap, const uint8_t* red_
   }
 }
 
-void GxGDEW0583Z00::drawExamplePicture_3C(const uint8_t* bitmap_3C, uint32_t size_3C, int16_t mode)
+void GxGDEW0583Z21::drawExamplePicture_3C(const uint8_t* bitmap_3C, uint32_t size_3C, int16_t mode)
 {
   unsigned long int i;
   unsigned char j, temp1, temp2, temp3;
@@ -207,7 +207,7 @@ void GxGDEW0583Z00::drawExamplePicture_3C(const uint8_t* bitmap_3C, uint32_t siz
     _wakeUp();
   }
   IO.writeCommandTransaction(0x10);
-  for (i = 0; i < 2 * GxGDEW0583Z00_BYTE_SIZE; i++)
+  for (i = 0; i < 2 * GxGDEW0583Z21_BYTE_SIZE; i++)
   {
 #if defined(__AVR) || defined(ESP8266) || defined(ESP32)
     temp1 = (i < size_3C) ? pgm_read_byte(&bitmap_3C[i]) : 0x00;
@@ -237,7 +237,7 @@ void GxGDEW0583Z00::drawExamplePicture_3C(const uint8_t* bitmap_3C, uint32_t siz
   else _sleep();
 }
 
-void GxGDEW0583Z00::drawBitmap(const uint8_t* bitmap, uint32_t size, int16_t mode)
+void GxGDEW0583Z21::drawBitmap(const uint8_t* bitmap, uint32_t size, int16_t mode)
 {
   if (_current_page != -1) return;
   if (mode & bm_partial_update)
@@ -245,9 +245,9 @@ void GxGDEW0583Z00::drawBitmap(const uint8_t* bitmap, uint32_t size, int16_t mod
     _using_partial_mode = true; // remember
     _wakeUp();
     IO.writeCommandTransaction(0x91); // partial in
-    _setPartialRamArea(0, 0, GxGDEW0583Z00_WIDTH - 1, GxGDEW0583Z00_HEIGHT - 1);
+    _setPartialRamArea(0, 0, GxGDEW0583Z21_WIDTH - 1, GxGDEW0583Z21_HEIGHT - 1);
     IO.writeCommandTransaction(0x10);
-    for (uint32_t i = 0; i < GxGDEW0583Z00_BYTE_SIZE; i++)
+    for (uint32_t i = 0; i < GxGDEW0583Z21_BYTE_SIZE; i++)
     {
       uint8_t data = 0x00; // white is 0x00 on device
       if (i < size)
@@ -270,7 +270,7 @@ void GxGDEW0583Z00::drawBitmap(const uint8_t* bitmap, uint32_t size, int16_t mod
     _using_partial_mode = false; // remember
     _wakeUp();
     IO.writeCommandTransaction(0x10);
-    for (uint32_t i = 0; i < GxGDEW0583Z00_BYTE_SIZE; i++)
+    for (uint32_t i = 0; i < GxGDEW0583Z21_BYTE_SIZE; i++)
     {
       uint8_t data = 0x00; // white is 0x00 on device
       if (i < size)
@@ -290,7 +290,7 @@ void GxGDEW0583Z00::drawBitmap(const uint8_t* bitmap, uint32_t size, int16_t mod
   }
 }
 
-void GxGDEW0583Z00::eraseDisplay(bool using_partial_update)
+void GxGDEW0583Z21::eraseDisplay(bool using_partial_update)
 {
   if (_current_page != -1) return;
   if (using_partial_update)
@@ -298,9 +298,9 @@ void GxGDEW0583Z00::eraseDisplay(bool using_partial_update)
     if (!_using_partial_mode) _wakeUp();
     _using_partial_mode = true; // remember
     IO.writeCommandTransaction(0x91); // partial in
-    _setPartialRamArea(0, 0, GxGDEW0583Z00_WIDTH - 1, GxGDEW0583Z00_HEIGHT - 1);
+    _setPartialRamArea(0, 0, GxGDEW0583Z21_WIDTH - 1, GxGDEW0583Z21_HEIGHT - 1);
     IO.writeCommandTransaction(0x10);
-    for (uint32_t i = 0; i < GxGDEW0583Z00_BYTE_SIZE; i++)
+    for (uint32_t i = 0; i < GxGDEW0583Z21_BYTE_SIZE; i++)
     {
       _send8pixel(0x00, 0x00);
     }
@@ -313,7 +313,7 @@ void GxGDEW0583Z00::eraseDisplay(bool using_partial_update)
     _using_partial_mode = false; // remember
     _wakeUp();
     IO.writeCommandTransaction(0x10);
-    for (uint32_t i = 0; i < GxGDEW0583Z00_BYTE_SIZE; i++)
+    for (uint32_t i = 0; i < GxGDEW0583Z21_BYTE_SIZE; i++)
     {
       _send8pixel(0x00, 0x00);
     }
@@ -323,7 +323,7 @@ void GxGDEW0583Z00::eraseDisplay(bool using_partial_update)
   }
 }
 
-void GxGDEW0583Z00::updateWindow(uint16_t x, uint16_t y, uint16_t w, uint16_t h, bool using_rotation)
+void GxGDEW0583Z21::updateWindow(uint16_t x, uint16_t y, uint16_t w, uint16_t h, bool using_rotation)
 {
   if (using_rotation)
   {
@@ -332,24 +332,24 @@ void GxGDEW0583Z00::updateWindow(uint16_t x, uint16_t y, uint16_t w, uint16_t h,
       case 1:
         swap(x, y);
         swap(w, h);
-        x = GxGDEW0583Z00_WIDTH - x - w - 1;
+        x = GxGDEW0583Z21_WIDTH - x - w - 1;
         break;
       case 2:
-        x = GxGDEW0583Z00_WIDTH - x - w - 1;
-        y = GxGDEW0583Z00_HEIGHT - y - h - 1;
+        x = GxGDEW0583Z21_WIDTH - x - w - 1;
+        y = GxGDEW0583Z21_HEIGHT - y - h - 1;
         break;
       case 3:
         swap(x, y);
         swap(w, h);
-        y = GxGDEW0583Z00_HEIGHT - y  - h - 1;
+        y = GxGDEW0583Z21_HEIGHT - y  - h - 1;
         break;
     }
   }
-  if (x >= GxGDEW0583Z00_WIDTH) return;
-  if (y >= GxGDEW0583Z00_HEIGHT) return;
+  if (x >= GxGDEW0583Z21_WIDTH) return;
+  if (y >= GxGDEW0583Z21_HEIGHT) return;
   // x &= 0xFFF8; // byte boundary, not here, use encompassing rectangle
-  uint16_t xe = gx_uint16_min(GxGDEW0583Z00_WIDTH, x + w) - 1;
-  uint16_t ye = gx_uint16_min(GxGDEW0583Z00_HEIGHT, y + h) - 1;
+  uint16_t xe = gx_uint16_min(GxGDEW0583Z21_WIDTH, x + w) - 1;
+  uint16_t ye = gx_uint16_min(GxGDEW0583Z21_HEIGHT, y + h) - 1;
   // x &= 0xFFF8; // byte boundary, not needed here
   uint16_t xs_bx = x / 8;
   uint16_t xe_bx = (xe + 7) / 8;
@@ -362,27 +362,27 @@ void GxGDEW0583Z00::updateWindow(uint16_t x, uint16_t y, uint16_t w, uint16_t h,
   {
     for (int16_t x1 = xs_bx; x1 < xe_bx; x1++)
     {
-      uint16_t idx = (y1 * (GxGDEW0583Z00_WIDTH / 8) + x1) % sizeof(_black_buffer);
+      uint16_t idx = (y1 * (GxGDEW0583Z21_WIDTH / 8) + x1) % sizeof(_black_buffer);
       _send8pixel(_black_buffer[idx], _red_buffer[idx]);
     }
   }
   IO.writeCommandTransaction(0x12);      //display refresh
   _waitWhileBusy("updateWindow");
   IO.writeCommandTransaction(0x92); // partial out
-  delay(GxGDEW0583Z00_PU_DELAY); // don't stress this display
+  delay(GxGDEW0583Z21_PU_DELAY); // don't stress this display
 }
 
-void GxGDEW0583Z00::updateToWindow(uint16_t xs, uint16_t ys, uint16_t xd, uint16_t yd, uint16_t w, uint16_t h, bool using_rotation)
+void GxGDEW0583Z21::updateToWindow(uint16_t xs, uint16_t ys, uint16_t xd, uint16_t yd, uint16_t w, uint16_t h, bool using_rotation)
 {
   if (!_using_partial_mode) _wakeUp();
   _using_partial_mode = true;
   _writeToWindow(xs, ys, xd, yd, w, h, using_rotation);
   IO.writeCommandTransaction(0x12);      //display refresh
   _waitWhileBusy("updateToWindow");
-  delay(GxGDEW0583Z00_PU_DELAY); // don't stress this display
+  delay(GxGDEW0583Z21_PU_DELAY); // don't stress this display
 }
 
-void GxGDEW0583Z00::_writeToWindow(uint16_t xs, uint16_t ys, uint16_t xd, uint16_t yd, uint16_t w, uint16_t h, bool using_rotation)
+void GxGDEW0583Z21::_writeToWindow(uint16_t xs, uint16_t ys, uint16_t xd, uint16_t yd, uint16_t w, uint16_t h, bool using_rotation)
 {
   if (using_rotation)
   {
@@ -392,31 +392,31 @@ void GxGDEW0583Z00::_writeToWindow(uint16_t xs, uint16_t ys, uint16_t xd, uint16
         swap(xs, ys);
         swap(xd, yd);
         swap(w, h);
-        xs = GxGDEW0583Z00_WIDTH - xs - w - 1;
-        xd = GxGDEW0583Z00_WIDTH - xd - w - 1;
+        xs = GxGDEW0583Z21_WIDTH - xs - w - 1;
+        xd = GxGDEW0583Z21_WIDTH - xd - w - 1;
         break;
       case 2:
-        xs = GxGDEW0583Z00_WIDTH - xs - w - 1;
-        ys = GxGDEW0583Z00_HEIGHT - ys - h - 1;
-        xd = GxGDEW0583Z00_WIDTH - xd - w - 1;
-        yd = GxGDEW0583Z00_HEIGHT - yd - h - 1;
+        xs = GxGDEW0583Z21_WIDTH - xs - w - 1;
+        ys = GxGDEW0583Z21_HEIGHT - ys - h - 1;
+        xd = GxGDEW0583Z21_WIDTH - xd - w - 1;
+        yd = GxGDEW0583Z21_HEIGHT - yd - h - 1;
         break;
       case 3:
         swap(xs, ys);
         swap(xd, yd);
         swap(w, h);
-        ys = GxGDEW0583Z00_HEIGHT - ys  - h - 1;
-        yd = GxGDEW0583Z00_HEIGHT - yd  - h - 1;
+        ys = GxGDEW0583Z21_HEIGHT - ys  - h - 1;
+        yd = GxGDEW0583Z21_HEIGHT - yd  - h - 1;
         break;
     }
   }
-  if (xs >= GxGDEW0583Z00_WIDTH) return;
-  if (ys >= GxGDEW0583Z00_HEIGHT) return;
-  if (xd >= GxGDEW0583Z00_WIDTH) return;
-  if (yd >= GxGDEW0583Z00_HEIGHT) return;
+  if (xs >= GxGDEW0583Z21_WIDTH) return;
+  if (ys >= GxGDEW0583Z21_HEIGHT) return;
+  if (xd >= GxGDEW0583Z21_WIDTH) return;
+  if (yd >= GxGDEW0583Z21_HEIGHT) return;
   // the screen limits are the hard limits
-  uint16_t xde = gx_uint16_min(GxGDEW0583Z00_WIDTH, xd + w) - 1;
-  uint16_t yde = gx_uint16_min(GxGDEW0583Z00_HEIGHT, yd + h) - 1;
+  uint16_t xde = gx_uint16_min(GxGDEW0583Z21_WIDTH, xd + w) - 1;
+  uint16_t yde = gx_uint16_min(GxGDEW0583Z21_HEIGHT, yd + h) - 1;
   IO.writeCommandTransaction(0x91); // partial in
   // soft limits, must send as many bytes as set by _SetRamArea
   uint16_t yse = ys + yde - yd;
@@ -427,20 +427,20 @@ void GxGDEW0583Z00::_writeToWindow(uint16_t xs, uint16_t ys, uint16_t xd, uint16
   {
     for (int16_t x1 = xss_d8; x1 < xse_d8; x1++)
     {
-      uint16_t idx = (y1 * (GxGDEW0583Z00_WIDTH / 8) + x1) % sizeof(_black_buffer);
+      uint16_t idx = (y1 * (GxGDEW0583Z21_WIDTH / 8) + x1) % sizeof(_black_buffer);
       _send8pixel(_black_buffer[idx], _red_buffer[idx]);
     }
   }
   IO.writeCommandTransaction(0x92); // partial out
 }
 
-void GxGDEW0583Z00::powerDown()
+void GxGDEW0583Z21::powerDown()
 {
   _using_partial_mode = false; // force _wakeUp()
   _sleep();
 }
 
-uint16_t GxGDEW0583Z00::_setPartialRamArea(uint16_t x, uint16_t y, uint16_t xe, uint16_t ye)
+uint16_t GxGDEW0583Z21::_setPartialRamArea(uint16_t x, uint16_t y, uint16_t xe, uint16_t ye)
 {
   x &= 0xFFF8; // byte boundary
   xe = (xe - 1) | 0x0007; // byte boundary - 1
@@ -458,7 +458,7 @@ uint16_t GxGDEW0583Z00::_setPartialRamArea(uint16_t x, uint16_t y, uint16_t xe, 
   return (7 + xe - x) / 8; // number of bytes to transfer per line
 }
 
-void GxGDEW0583Z00::_waitWhileBusy(const char* comment)
+void GxGDEW0583Z21::_waitWhileBusy(const char* comment)
 {
   unsigned long start = micros();
   while (1)
@@ -486,7 +486,7 @@ void GxGDEW0583Z00::_waitWhileBusy(const char* comment)
   (void) start;
 }
 
-void GxGDEW0583Z00::_send8pixel(uint8_t black_data, uint8_t red_data)
+void GxGDEW0583Z21::_send8pixel(uint8_t black_data, uint8_t red_data)
 {
   for (uint8_t j = 0; j < 8; j++)
   {
@@ -507,7 +507,7 @@ void GxGDEW0583Z00::_send8pixel(uint8_t black_data, uint8_t red_data)
   }
 }
 
-void GxGDEW0583Z00::_wakeUp()
+void GxGDEW0583Z21::_wakeUp()
 {
   if (_rst >= 0)
   {
@@ -568,7 +568,7 @@ void GxGDEW0583Z00::_wakeUp()
   _waitWhileBusy("Power On");
 }
 
-void GxGDEW0583Z00::_sleep(void)
+void GxGDEW0583Z21::_sleep(void)
 {
   /**********************************flash sleep**********************************/
   IO.writeCommandTransaction(0X65);     //FLASH CONTROL
@@ -590,21 +590,21 @@ void GxGDEW0583Z00::_sleep(void)
   }
 }
 
-void GxGDEW0583Z00::drawPaged(void (*drawCallback)(void))
+void GxGDEW0583Z21::drawPaged(void (*drawCallback)(void))
 {
   if (_current_page != -1) return;
   _using_partial_mode = false;
   _wakeUp();
   IO.writeCommandTransaction(0x10);
-  for (_current_page = 0; _current_page < GxGDEW0583Z00_PAGES; _current_page++)
+  for (_current_page = 0; _current_page < GxGDEW0583Z21_PAGES; _current_page++)
   {
     fillScreen(GxEPD_WHITE);
     drawCallback();
-    for (int16_t y1 = 0; y1 < GxGDEW0583Z00_PAGE_HEIGHT; y1++)
+    for (int16_t y1 = 0; y1 < GxGDEW0583Z21_PAGE_HEIGHT; y1++)
     {
-      for (int16_t x1 = 0; x1 < GxGDEW0583Z00_WIDTH / 8; x1++)
+      for (int16_t x1 = 0; x1 < GxGDEW0583Z21_WIDTH / 8; x1++)
       {
-        uint16_t idx = (y1 * (GxGDEW0583Z00_WIDTH / 8) + x1) % sizeof(_black_buffer);
+        uint16_t idx = (y1 * (GxGDEW0583Z21_WIDTH / 8) + x1) % sizeof(_black_buffer);
         _send8pixel(_black_buffer[idx], _red_buffer[idx]);
       }
     }
@@ -618,21 +618,21 @@ void GxGDEW0583Z00::drawPaged(void (*drawCallback)(void))
   _sleep();
 }
 
-void GxGDEW0583Z00::drawPaged(void (*drawCallback)(uint32_t), uint32_t p)
+void GxGDEW0583Z21::drawPaged(void (*drawCallback)(uint32_t), uint32_t p)
 {
   if (_current_page != -1) return;
   _using_partial_mode = false;
   _wakeUp();
   IO.writeCommandTransaction(0x10);
-  for (_current_page = 0; _current_page < GxGDEW0583Z00_PAGES; _current_page++)
+  for (_current_page = 0; _current_page < GxGDEW0583Z21_PAGES; _current_page++)
   {
     fillScreen(GxEPD_WHITE);
     drawCallback(p);
-    for (int16_t y1 = 0; y1 < GxGDEW0583Z00_PAGE_HEIGHT; y1++)
+    for (int16_t y1 = 0; y1 < GxGDEW0583Z21_PAGE_HEIGHT; y1++)
     {
-      for (int16_t x1 = 0; x1 < GxGDEW0583Z00_WIDTH / 8; x1++)
+      for (int16_t x1 = 0; x1 < GxGDEW0583Z21_WIDTH / 8; x1++)
       {
-        uint16_t idx = (y1 * (GxGDEW0583Z00_WIDTH / 8) + x1) % sizeof(_black_buffer);
+        uint16_t idx = (y1 * (GxGDEW0583Z21_WIDTH / 8) + x1) % sizeof(_black_buffer);
         _send8pixel(_black_buffer[idx], _red_buffer[idx]);
       }
     }
@@ -646,21 +646,21 @@ void GxGDEW0583Z00::drawPaged(void (*drawCallback)(uint32_t), uint32_t p)
   _sleep();
 }
 
-void GxGDEW0583Z00::drawPaged(void (*drawCallback)(const void*), const void* p)
+void GxGDEW0583Z21::drawPaged(void (*drawCallback)(const void*), const void* p)
 {
   if (_current_page != -1) return;
   _using_partial_mode = false;
   _wakeUp();
   IO.writeCommandTransaction(0x10);
-  for (_current_page = 0; _current_page < GxGDEW0583Z00_PAGES; _current_page++)
+  for (_current_page = 0; _current_page < GxGDEW0583Z21_PAGES; _current_page++)
   {
     fillScreen(GxEPD_WHITE);
     drawCallback(p);
-    for (int16_t y1 = 0; y1 < GxGDEW0583Z00_PAGE_HEIGHT; y1++)
+    for (int16_t y1 = 0; y1 < GxGDEW0583Z21_PAGE_HEIGHT; y1++)
     {
-      for (int16_t x1 = 0; x1 < GxGDEW0583Z00_WIDTH / 8; x1++)
+      for (int16_t x1 = 0; x1 < GxGDEW0583Z21_WIDTH / 8; x1++)
       {
-        uint16_t idx = (y1 * (GxGDEW0583Z00_WIDTH / 8) + x1) % sizeof(_black_buffer);
+        uint16_t idx = (y1 * (GxGDEW0583Z21_WIDTH / 8) + x1) % sizeof(_black_buffer);
         _send8pixel(_black_buffer[idx], _red_buffer[idx]);
       }
     }
@@ -674,21 +674,21 @@ void GxGDEW0583Z00::drawPaged(void (*drawCallback)(const void*), const void* p)
   _sleep();
 }
 
-void GxGDEW0583Z00::drawPaged(void (*drawCallback)(const void*, const void*), const void* p1, const void* p2)
+void GxGDEW0583Z21::drawPaged(void (*drawCallback)(const void*, const void*), const void* p1, const void* p2)
 {
   if (_current_page != -1) return;
   _using_partial_mode = false;
   _wakeUp();
   IO.writeCommandTransaction(0x10);
-  for (_current_page = 0; _current_page < GxGDEW0583Z00_PAGES; _current_page++)
+  for (_current_page = 0; _current_page < GxGDEW0583Z21_PAGES; _current_page++)
   {
     fillScreen(GxEPD_WHITE);
     drawCallback(p1, p2);
-    for (int16_t y1 = 0; y1 < GxGDEW0583Z00_PAGE_HEIGHT; y1++)
+    for (int16_t y1 = 0; y1 < GxGDEW0583Z21_PAGE_HEIGHT; y1++)
     {
-      for (int16_t x1 = 0; x1 < GxGDEW0583Z00_WIDTH / 8; x1++)
+      for (int16_t x1 = 0; x1 < GxGDEW0583Z21_WIDTH / 8; x1++)
       {
-        uint16_t idx = (y1 * (GxGDEW0583Z00_WIDTH / 8) + x1) % sizeof(_black_buffer);
+        uint16_t idx = (y1 * (GxGDEW0583Z21_WIDTH / 8) + x1) % sizeof(_black_buffer);
         _send8pixel(_black_buffer[idx], _red_buffer[idx]);
       }
     }
@@ -702,28 +702,28 @@ void GxGDEW0583Z00::drawPaged(void (*drawCallback)(const void*, const void*), co
   _sleep();
 }
 
-void GxGDEW0583Z00::_rotate(uint16_t& x, uint16_t& y, uint16_t& w, uint16_t& h)
+void GxGDEW0583Z21::_rotate(uint16_t& x, uint16_t& y, uint16_t& w, uint16_t& h)
 {
   switch (getRotation())
   {
     case 1:
       swap(x, y);
       swap(w, h);
-      x = GxGDEW0583Z00_WIDTH - x - w - 1;
+      x = GxGDEW0583Z21_WIDTH - x - w - 1;
       break;
     case 2:
-      x = GxGDEW0583Z00_WIDTH - x - w - 1;
-      y = GxGDEW0583Z00_HEIGHT - y - h - 1;
+      x = GxGDEW0583Z21_WIDTH - x - w - 1;
+      y = GxGDEW0583Z21_HEIGHT - y - h - 1;
       break;
     case 3:
       swap(x, y);
       swap(w, h);
-      y = GxGDEW0583Z00_HEIGHT - y - h - 1;
+      y = GxGDEW0583Z21_HEIGHT - y - h - 1;
       break;
   }
 }
 
-void GxGDEW0583Z00::drawPagedToWindow(void (*drawCallback)(void), uint16_t x, uint16_t y, uint16_t w, uint16_t h)
+void GxGDEW0583Z21::drawPagedToWindow(void (*drawCallback)(void), uint16_t x, uint16_t y, uint16_t w, uint16_t h)
 {
   if (_current_page != -1) return;
   _rotate(x, y, w, h);
@@ -733,25 +733,25 @@ void GxGDEW0583Z00::drawPagedToWindow(void (*drawCallback)(void), uint16_t x, ui
     eraseDisplay(true);
   }
   _using_partial_mode = true;
-  for (_current_page = 0; _current_page < GxGDEW0583Z00_PAGES; _current_page++)
+  for (_current_page = 0; _current_page < GxGDEW0583Z21_PAGES; _current_page++)
   {
-    uint16_t yds = gx_uint16_max(y, _current_page * GxGDEW0583Z00_PAGE_HEIGHT);
-    uint16_t yde = gx_uint16_min(y + h, (_current_page + 1) * GxGDEW0583Z00_PAGE_HEIGHT);
+    uint16_t yds = gx_uint16_max(y, _current_page * GxGDEW0583Z21_PAGE_HEIGHT);
+    uint16_t yde = gx_uint16_min(y + h, (_current_page + 1) * GxGDEW0583Z21_PAGE_HEIGHT);
     if (yde > yds)
     {
       fillScreen(GxEPD_WHITE);
       drawCallback();
-      uint16_t ys = yds % GxGDEW0583Z00_PAGE_HEIGHT;
+      uint16_t ys = yds % GxGDEW0583Z21_PAGE_HEIGHT;
       _writeToWindow(x, ys, x, yds, w, yde - yds, false);
     }
   }
   _current_page = -1;
   IO.writeCommandTransaction(0x12);      //display refresh
   _waitWhileBusy("drawPagedToWindow");
-  delay(GxGDEW0583Z00_PU_DELAY); // don't stress this display
+  delay(GxGDEW0583Z21_PU_DELAY); // don't stress this display
 }
 
-void GxGDEW0583Z00::drawPagedToWindow(void (*drawCallback)(uint32_t), uint16_t x, uint16_t y, uint16_t w, uint16_t h, uint32_t p)
+void GxGDEW0583Z21::drawPagedToWindow(void (*drawCallback)(uint32_t), uint16_t x, uint16_t y, uint16_t w, uint16_t h, uint32_t p)
 {
   if (_current_page != -1) return;
   _rotate(x, y, w, h);
@@ -761,25 +761,25 @@ void GxGDEW0583Z00::drawPagedToWindow(void (*drawCallback)(uint32_t), uint16_t x
     eraseDisplay(true);
   }
   _using_partial_mode = true;
-  for (_current_page = 0; _current_page < GxGDEW0583Z00_PAGES; _current_page++)
+  for (_current_page = 0; _current_page < GxGDEW0583Z21_PAGES; _current_page++)
   {
-    uint16_t yds = gx_uint16_max(y, _current_page * GxGDEW0583Z00_PAGE_HEIGHT);
-    uint16_t yde = gx_uint16_min(y + h, (_current_page + 1) * GxGDEW0583Z00_PAGE_HEIGHT);
+    uint16_t yds = gx_uint16_max(y, _current_page * GxGDEW0583Z21_PAGE_HEIGHT);
+    uint16_t yde = gx_uint16_min(y + h, (_current_page + 1) * GxGDEW0583Z21_PAGE_HEIGHT);
     if (yde > yds)
     {
       fillScreen(GxEPD_WHITE);
       drawCallback(p);
-      uint16_t ys = yds % GxGDEW0583Z00_PAGE_HEIGHT;
+      uint16_t ys = yds % GxGDEW0583Z21_PAGE_HEIGHT;
       _writeToWindow(x, ys, x, yds, w, yde - yds, false);
     }
   }
   _current_page = -1;
   IO.writeCommandTransaction(0x12);      //display refresh
   _waitWhileBusy("drawPagedToWindow");
-  delay(GxGDEW0583Z00_PU_DELAY); // don't stress this display
+  delay(GxGDEW0583Z21_PU_DELAY); // don't stress this display
 }
 
-void GxGDEW0583Z00::drawPagedToWindow(void (*drawCallback)(const void*), uint16_t x, uint16_t y, uint16_t w, uint16_t h, const void* p)
+void GxGDEW0583Z21::drawPagedToWindow(void (*drawCallback)(const void*), uint16_t x, uint16_t y, uint16_t w, uint16_t h, const void* p)
 {
   if (_current_page != -1) return;
   _rotate(x, y, w, h);
@@ -789,25 +789,25 @@ void GxGDEW0583Z00::drawPagedToWindow(void (*drawCallback)(const void*), uint16_
     eraseDisplay(true);
   }
   _using_partial_mode = true;
-  for (_current_page = 0; _current_page < GxGDEW0583Z00_PAGES; _current_page++)
+  for (_current_page = 0; _current_page < GxGDEW0583Z21_PAGES; _current_page++)
   {
-    uint16_t yds = gx_uint16_max(y, _current_page * GxGDEW0583Z00_PAGE_HEIGHT);
-    uint16_t yde = gx_uint16_min(y + h, (_current_page + 1) * GxGDEW0583Z00_PAGE_HEIGHT);
+    uint16_t yds = gx_uint16_max(y, _current_page * GxGDEW0583Z21_PAGE_HEIGHT);
+    uint16_t yde = gx_uint16_min(y + h, (_current_page + 1) * GxGDEW0583Z21_PAGE_HEIGHT);
     if (yde > yds)
     {
       fillScreen(GxEPD_WHITE);
       drawCallback(p);
-      uint16_t ys = yds % GxGDEW0583Z00_PAGE_HEIGHT;
+      uint16_t ys = yds % GxGDEW0583Z21_PAGE_HEIGHT;
       _writeToWindow(x, ys, x, yds, w, yde - yds, false);
     }
   }
   _current_page = -1;
   IO.writeCommandTransaction(0x12);      //display refresh
   _waitWhileBusy("drawPagedToWindow");
-  delay(GxGDEW0583Z00_PU_DELAY); // don't stress this display
+  delay(GxGDEW0583Z21_PU_DELAY); // don't stress this display
 }
 
-void GxGDEW0583Z00::drawPagedToWindow(void (*drawCallback)(const void*, const void*), uint16_t x, uint16_t y, uint16_t w, uint16_t h, const void* p1, const void* p2)
+void GxGDEW0583Z21::drawPagedToWindow(void (*drawCallback)(const void*, const void*), uint16_t x, uint16_t y, uint16_t w, uint16_t h, const void* p1, const void* p2)
 {
   if (_current_page != -1) return;
   _rotate(x, y, w, h);
@@ -817,37 +817,37 @@ void GxGDEW0583Z00::drawPagedToWindow(void (*drawCallback)(const void*, const vo
     eraseDisplay(true);
   }
   _using_partial_mode = true;
-  for (_current_page = 0; _current_page < GxGDEW0583Z00_PAGES; _current_page++)
+  for (_current_page = 0; _current_page < GxGDEW0583Z21_PAGES; _current_page++)
   {
-    uint16_t yds = gx_uint16_max(y, _current_page * GxGDEW0583Z00_PAGE_HEIGHT);
-    uint16_t yde = gx_uint16_min(y + h, (_current_page + 1) * GxGDEW0583Z00_PAGE_HEIGHT);
+    uint16_t yds = gx_uint16_max(y, _current_page * GxGDEW0583Z21_PAGE_HEIGHT);
+    uint16_t yde = gx_uint16_min(y + h, (_current_page + 1) * GxGDEW0583Z21_PAGE_HEIGHT);
     if (yde > yds)
     {
       fillScreen(GxEPD_WHITE);
       drawCallback(p1, p2);
-      uint16_t ys = yds % GxGDEW0583Z00_PAGE_HEIGHT;
+      uint16_t ys = yds % GxGDEW0583Z21_PAGE_HEIGHT;
       _writeToWindow(x, ys, x, yds, w, yde - yds, false);
     }
   }
   _current_page = -1;
   IO.writeCommandTransaction(0x12);      //display refresh
   _waitWhileBusy("drawPagedToWindow");
-  delay(GxGDEW0583Z00_PU_DELAY); // don't stress this display
+  delay(GxGDEW0583Z21_PU_DELAY); // don't stress this display
 }
 
-void GxGDEW0583Z00::drawCornerTest(uint8_t em)
+void GxGDEW0583Z21::drawCornerTest(uint8_t em)
 {
   _wakeUp();
   IO.writeCommandTransaction(0x10);
-  for (uint32_t y = 0; y < GxGDEW0583Z00_HEIGHT; y++)
+  for (uint32_t y = 0; y < GxGDEW0583Z21_HEIGHT; y++)
   {
-    for (uint32_t x = 0; x < GxGDEW0583Z00_WIDTH / 8; x++)
+    for (uint32_t x = 0; x < GxGDEW0583Z21_WIDTH / 8; x++)
     {
       uint8_t data = 0xFF;
       if ((x < 1) && (y < 8)) data = 0x00;
-      if ((x > GxGDEW0583Z00_WIDTH / 8 - 3) && (y < 16)) data = 0x00;
-      if ((x > GxGDEW0583Z00_WIDTH / 8 - 4) && (y > GxGDEW0583Z00_HEIGHT - 25)) data = 0x00;
-      if ((x < 4) && (y > GxGDEW0583Z00_HEIGHT - 33)) data = 0x00;
+      if ((x > GxGDEW0583Z21_WIDTH / 8 - 3) && (y < 16)) data = 0x00;
+      if ((x > GxGDEW0583Z21_WIDTH / 8 - 4) && (y > GxGDEW0583Z21_HEIGHT - 25)) data = 0x00;
+      if ((x < 4) && (y > GxGDEW0583Z21_HEIGHT - 33)) data = 0x00;
       _send8pixel(~data, 0x00);
     }
   }
