@@ -46,8 +46,8 @@ class Display{
     void setTime2(String name);
     void setLecture1(String name);
     void setLecture2(String name);
-    void setTecher1(String name);
-    void setTecher2(String name);
+    void setTeacher1(String name);
+    void setTeacher2(String name);
     void drawDisplay();
   //protected:
     void drawLines();
