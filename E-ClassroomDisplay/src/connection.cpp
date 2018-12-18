@@ -6,7 +6,7 @@ const char* ssid = "devices";
 const char* password = "toitoitoi";
 const uint16_t port = 420.;
 const char* host=  "145.44.187.11";
-IPAddress ip(145,44,187,12);
+IPAddress static_ip(145,44,187,12);
 IPAddress gateway(145,44,187,1);
 IPAddress subnet(255,255,255,128);
 
@@ -17,9 +17,9 @@ uint8_t Connection::getSec(){
     return seconds;
 }
 
-void Connection::WiFi_innit(){
+void Connection::WiFi_innit(Display display){
     WiFi.begin(ssid, password);
-    WiFi.config(ip, gateway, subnet);
+    WiFi.config(static_ip, gateway, subnet);
     while(WiFi.status()!=WL_CONNECTED){
         delay(500);
         #if DEBUG
@@ -32,13 +32,15 @@ void Connection::WiFi_innit(){
         Serial.print("IP address: ");
         Serial.println(WiFi.localIP());
     #endif
-    TCPConnect();
+    TCPConnect(display);
 }
 
-void Connection::TCPConnect(){
+void Connection::TCPConnect(Display display){
     WiFiClient client;
     if(!client.connect(host, port)){
-        Serial.println("Connection failed");
+        #if DEBUG
+            Serial.println("Connection failed");
+        #endif
         return;
     } else {
         #if DEBUG
@@ -47,14 +49,18 @@ void Connection::TCPConnect(){
         #endif
     }
     TCPsendRequest("Gentstudent42.2", client);
+    //client.println(TCPreceivePacket(client));
     #if DEBUG
-        Serial.println(TCPreceivePacket(client));
+        // display.setLokaal(TCPreceivePacket(client));
+        // display.setLokaalText(TCPreceivePacket(client));
+        //Serial.println(TCPreceivePacket(client));
+
     #endif
 
     TCPcloseConnection(client);
 }
 
-void Connection::TCPsendRequest(char* string, WiFiClient client){
+void Connection::TCPsendRequest(String string, WiFiClient client){
     client.println(string);
     client.println(WiFi.macAddress());
 }
@@ -68,13 +74,34 @@ void Connection::TCPcloseConnection(WiFiClient client){
 String Connection::TCPreceivePacket(WiFiClient client){
     String packet;
     client.println("Reading from TCP connection");
-    packet = client.readStringUntil('\n');
+    packet = client.readStringUntil(';');
     return packet;
 }
 
-int getBatteryStatus(){
+int Connection::getBatteryStatus(){
+    //analogRead();
     #if DEBUG
         Serial.println("Batterij is kanker vol");
     #endif
-
+    return 1;
 }
+
+// void parsePacket(String string){
+//     String delimiter = ';';
+
+//     uint16_t pos;
+//     string token;
+//     uint8_t item;
+//     // while ((pos = string.find(delimiter)) != sizeof(uint16_t)){
+//     //     token = string.substr(0, pos);
+//     //     // switch(item){
+//     //     //     case 1: 
+
+//     //     //     case 2:
+
+//     //     //     case 3:
+
+
+//     //     // }
+//     // }
+// }

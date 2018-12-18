@@ -1,3 +1,5 @@
+#ifndef DISPLAY_H
+#define DISPLAY_H
 #include <Arduino.h>
 //display libs
 #include <GxEPD.h>
@@ -39,6 +41,9 @@ class Display
     void setLecture2(String name);
     void setTecher1(String name);
     void setTecher2(String name);
+    String getLokaal();
+    String getLokaalText();
 };
 
 void drawDisplay();
+#endif

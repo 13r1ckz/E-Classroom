@@ -53,6 +53,14 @@ void Display::setTecher2(String name)
 	teacher2 = name;
 }
 
+String Display::getLokaal(){
+	return lokaal;
+}
+
+String Display::getLokaalText(){
+	return lokaalText;
+}
+
 void drawDisplay()
 {
 	ePaper.drawLine(0, 149, 600, 149, GxEPD_BLACK);
