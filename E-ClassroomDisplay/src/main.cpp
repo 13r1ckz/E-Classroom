@@ -13,7 +13,6 @@ Main main;
 // Main (Setup)
 // ----------------------------------------------------------------------------
 void setup(){
-  Serial.begin(115200);
   display.initDisplay();
   while(!Serial);
   display.updateDisplay();

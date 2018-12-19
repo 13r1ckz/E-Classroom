@@ -6,25 +6,23 @@
 #include <Arduino.h>
 //display libs
 #include <GxEPD.h>
-//if b/w/r:
-#include <GxGDEW0583Z21/GxGDEW0583Z21.h>
-//if b/w:
-//#include <GxGDEW0583T7/GxGDEW0583T7.h>
+#include <GxGDEW0583Z21/GxGDEW0583Z21.h> // b/w/r diplay
+//#include <GxGDEW0583T7/GxGDEW0583T7.h> // b/w Display
 #include <GxFont_GFX.h>
 #include <GxIO/GxIO_SPI/GxIO_SPI.h>
 #include <GxIO/GxIO.h>
-//draw libs
-#include <gfxfont.h>
-#include <Adafruit_GFX.h>
-#include <Adafruit_SPITFT.h>
-#include <Adafruit_SPITFT_Macros.h>
 //fonts libs
 #include <Fonts/Roboto_Mono_26.h>
 #include <Fonts/Roboto_Mono_Bold_48.h>
 #include <Fonts/Roboto_Mono_Bold_100.h>
 //bitmap libs
 #include <imglib/windesheim.h>
+
 /* Defines -------------------------------------------------------------------*/
+#define CS_pin 2  /*CS-D4-GPIO2*/
+#define DC_pin 4  /*DC-D2-GPIO4*/
+#define RST_pin 5 /*RST-D1-GPIO5*/
+#define BUSY_pin 12 /*BUSY-D6-GPIO12*/
 #define xOffSet 10
 #define firstLine 90
 #define secondLine 120

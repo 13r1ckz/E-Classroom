@@ -5,8 +5,8 @@
 /* Includes ------------------------------------------------------------------*/
 #include "display.h"
 
-GxIO_Class io(SPI, /*CS-D16*/ 2, /* DC-D4*/ 4, /*RST-D5*/ 5);
-GxEPD_Class ePaper(io, 5, 12 /*RST-D5*/ /*BUSY-D12*/);
+GxIO_Class io(SPI, CS_pin, DC_pin, RST_pin);
+GxEPD_Class ePaper(io, RST_pin, BUSY_pin);
 
 // ----------------------------------------------------------------------------
 // Global variables
