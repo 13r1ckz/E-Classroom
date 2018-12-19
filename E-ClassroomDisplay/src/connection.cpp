@@ -1,14 +1,17 @@
 #include "connection.h"
 
+#define MAX_TCP_MSG_SIZE 65535
 #define DEBUG 1
 
 const char* ssid = "devices";
 const char* password = "toitoitoi";
-const uint16_t port = 420.;
+const uint16_t port = 420;
 const char* host=  "145.44.187.11";
 IPAddress static_ip(145,44,187,12);
 IPAddress gateway(145,44,187,1);
 IPAddress subnet(255,255,255,128);
+
+//NodeList roomList = malloc(sizeof(nodeList));
 
 uint32_t Connection::getMin(){
     return minutes*60;
@@ -39,7 +42,7 @@ void Connection::TCPConnect(Display display){
     WiFiClient client;
     if(!client.connect(host, port)){
         #if DEBUG
-            Serial.println("Connection failed");
+            Serial.println("TCP connection failed");
         #endif
         return;
     } else {
@@ -49,6 +52,7 @@ void Connection::TCPConnect(Display display){
         #endif
     }
     TCPsendRequest("Gentstudent42.2", client);
+    parsePacket((TCPreceivePacket(client)));
     //client.println(TCPreceivePacket(client));
     #if DEBUG
         // display.setLokaal(TCPreceivePacket(client));
@@ -74,7 +78,10 @@ void Connection::TCPcloseConnection(WiFiClient client){
 String Connection::TCPreceivePacket(WiFiClient client){
     String packet;
     client.println("Reading from TCP connection");
-    packet = client.readStringUntil(';');
+    packet = client.readStringUntil('\0');
+    #if DEBUG
+        Serial.println("Packet end received");
+    #endif
     return packet;
 }
 
@@ -86,22 +93,22 @@ int Connection::getBatteryStatus(){
     return 1;
 }
 
-// void parsePacket(String string){
-//     String delimiter = ';';
-
-//     uint16_t pos;
-//     string token;
-//     uint8_t item;
-//     // while ((pos = string.find(delimiter)) != sizeof(uint16_t)){
-//     //     token = string.substr(0, pos);
-//     //     // switch(item){
-//     //     //     case 1: 
-
-//     //     //     case 2:
-
-//     //     //     case 3:
-
-
-//     //     // }
-//     // }
-// }
+void Connection::parsePacket(String string){
+    uint16_t i = 0;
+    const char delimiter = ';';
+    uint16_t beginPos = 0;
+    uint16_t endPos = 0;
+    String temp;
+    while(string[i] != MAX_TCP_MSG_SIZE && string[i] != '\3'){
+        if(string[i] == delimiter){
+            endPos = i;
+            temp = string.substring(beginPos, endPos);
+            Serial.println(temp);
+            i++;
+        }
+        i++;
+        beginPos = endPos;
+    }
+    // string = string.substring(0,2);
+    // Serial.println(string);
+}
