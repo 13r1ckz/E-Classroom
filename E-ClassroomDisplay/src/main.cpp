@@ -5,6 +5,9 @@
 /* Includes ------------------------------------------------------------------*/
 #include "main.h"
 
+/* Defines -------------------------------------------------------------------*/
+#define SLEEP 0
+
 Display display;
 Connection connection;
 Main main;
@@ -16,7 +19,12 @@ void setup(){
   display.initDisplay();
   while(!Serial);
   display.updateDisplay();
-  //main.setSleep(connection.getMin(), connection.getSec());
+  connection.WiFi_innit(display);
+  #if SLEEP
+    main.setSleep(connection.getMin(), connection.getSec());
+  #else
+    Serial.println("Running without sleep mode.");
+  #endif
 }
 
 // ----------------------------------------------------------------------------

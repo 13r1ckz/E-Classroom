@@ -1,21 +1,34 @@
 /******************************************************************************
  * File : Connection.h
  ******************************************************************************/
+#ifndef CONNECTION_H
+#define CONNECTION_H
 
 /* Includes ------------------------------------------------------------------*/
 #include <Arduino.h>
 #include <ESP8266WiFi.h>
 #include <ESP8266HTTPClient.h>
+#include "display.h"
+extern "C"{
+	#include <node.h>
+}
+
 /* Classes -------------------------------------------------------------------*/
 class Connection{
   public:
-    void WiFi_innit();
     uint32_t getMin();
     uint8_t getSec();
-    
-  private:
+    void WiFi_innit(Display display);
+    int getBatteryStatus();
+
+  protected:
     uint8_t seconds;
     uint32_t minutes;
-    const char* ssid;
-    const char* password;
+    void TCPConnect(Display display);
+    void TCPsendRequest(String string, WiFiClient client);
+    void TCPcloseConnection(WiFiClient client);
+    String TCPreceivePacket(WiFiClient client);
+    void parsePacket(String string);
+    void setAllScreenData(NodeList nodelist);
 };
+#endif
