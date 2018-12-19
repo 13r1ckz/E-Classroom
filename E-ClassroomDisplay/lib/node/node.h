@@ -26,7 +26,7 @@ typedef struct NodeList
 {
 	struct Node *head;
 	struct Node *tail;
-	uint8_t   size;
+	uint16_t   size;
 }nodeList;
 
 node * createNode(uint8_t data);
