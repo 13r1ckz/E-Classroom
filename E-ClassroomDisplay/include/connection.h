@@ -4,9 +4,9 @@
 #include <Arduino.h>
 #include <ESP8266WiFi.h>
 #include <ESP8266HTTPClient.h>
-//#include <string>
-//#include <node.h>
+#include <node.h>
 #include "display.h"
+
 
 
 class Connection

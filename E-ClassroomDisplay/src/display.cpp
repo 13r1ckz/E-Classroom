@@ -44,11 +44,11 @@ void Display::setLecture2(String name)
 {
 	lecture2 = name;
 }
-void Display::setTecher1(String name)
+void Display::setTeacher1(String name)
 {
 	teacher1 = name;
 }
-void Display::setTecher2(String name)
+void Display::setTeacher2(String name)
 {
 	teacher2 = name;
 }
