@@ -11,7 +11,9 @@ void setup() {
   display.initDisplay();
   while(!Serial);
   display.updateDisplay();
-  connection.WiFi_innit();
+  connection.WiFi_innit(display);
+  // Serial.println(display.getLokaalText());
+  // Serial.println(display.getLokaal());
   #if SLEEP
     main.setSleep(connection.getMin(), connection.getSec());
   #else
