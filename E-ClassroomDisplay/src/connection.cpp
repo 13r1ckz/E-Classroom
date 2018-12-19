@@ -3,15 +3,17 @@
 #define MAX_TCP_MSG_SIZE 65535
 #define DEBUG 1
 
-const char* ssid = "devices";
-const char* password = "toitoitoi";
+const char *ssid = "devices";
+const char *password = "toitoitoi";
 const uint16_t port = 420;
 const char* host=  "145.44.187.11";
 IPAddress static_ip(145,44,187,12);
 IPAddress gateway(145,44,187,1);
 IPAddress subnet(255,255,255,128);
 
-//NodeList roomList = malloc(sizeof(nodeList));
+
+nodeList *data = (struct NodeList*) malloc(sizeof(nodeList));
+
 
 uint32_t Connection::getMin(){
     return minutes*60;
@@ -21,6 +23,7 @@ uint8_t Connection::getSec(){
 }
 
 void Connection::WiFi_innit(Display display){
+    
     WiFi.begin(ssid, password);
     WiFi.config(static_ip, gateway, subnet);
     while(WiFi.status()!=WL_CONNECTED){
@@ -94,6 +97,7 @@ int Connection::getBatteryStatus(){
 }
 
 void Connection::parsePacket(String string){
+    
     uint16_t i = 0;
     const char delimiter = ';';
     uint16_t beginPos = 0;
@@ -104,6 +108,7 @@ void Connection::parsePacket(String string){
             endPos = i;
             temp = string.substring(beginPos, endPos);
             Serial.println(temp);
+            addStrToList(data, (char *)temp.c_str());
             i++;
         }
         i++;

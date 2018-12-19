@@ -4,10 +4,10 @@
 #include <Arduino.h>
 #include <ESP8266WiFi.h>
 #include <ESP8266HTTPClient.h>
-#include <node.h>
 #include "display.h"
-
-
+extern "C"{
+	#include <node.h>
+}
 
 class Connection
 {
@@ -25,5 +25,6 @@ class Connection
     void TCPcloseConnection(WiFiClient client);
     String TCPreceivePacket(WiFiClient client);
     void parsePacket(String string);
+    void setAllScreenData(NodeList nodelist);
 };
 #endif
