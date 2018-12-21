@@ -14,7 +14,7 @@ int main(int argc, const char* argv[]) {
     while (true){
         server.connect();
 
-        char* data = server.getData();
+        char* data = "T5:50;College Lokaal;11:30 - 13:30;13:30 - 15:30;Engels 2;Engels1;Gidooooo;Tijntje"; 
 
 //        if(data == "\0") printf("Dat nullterminator tho\n");
 
