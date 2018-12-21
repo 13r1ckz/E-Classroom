@@ -102,7 +102,7 @@ void Display::drawLecture1(){
 	ePaper.print(lecture1);
 	// Teacher
 	ePaper.setCursor(xOffSetText, yL1Teacher);
-	ePaper.print(teacher2);
+	ePaper.print(teacher1);
 }
 
 void Display::drawLecture2(){
@@ -117,7 +117,7 @@ void Display::drawLecture2(){
 	ePaper.print(lecture2);
 	// Teacher
 	ePaper.setCursor(xOffSetText, yL2Teacher);
-	ePaper.print(teacher1);
+	ePaper.print(teacher2);
 }
 
 void Display::drawFreeFrom(){
