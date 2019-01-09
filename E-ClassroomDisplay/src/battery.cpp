@@ -4,15 +4,20 @@
 
 /* Includes ------------------------------------------------------------------*/
 #include "battery.h"
-
+// ----------------------------------------------------------------------------
+// Global variables
+// ----------------------------------------------------------------------------
+uint8_t MOSFET = D3;
+uint8_t percentage = 0;
 // ----------------------------------------------------------------------------
 // Functions
 // ----------------------------------------------------------------------------
-int Battery::batteryPercentage(){
-  int percentage = 0; 
+void Battery::batteryPercentage(){
+  pinMode(MOSFET, OUTPUT);
+  digitalWrite(MOSFET, HIGH);
   float volt = getVoltage();
-  percentage = (volt - 3.2) * 100;
-  return percentage;
+  percentage = (volt - batteryMinVolt) * 100;
+  digitalWrite(MOSFET, LOW);
 }
 
 float Battery::getVoltage(){
@@ -25,5 +30,9 @@ float Battery::getVoltage(){
   }
   sample = sample / 10; 
   volt = voltReduction * sample * espVoltage/ maxAnalogValue; 
+  volt = volt - offset;
   return volt;
 }
+ uint8_t getBatteryPercentage(){
+   return percentage;
+ }

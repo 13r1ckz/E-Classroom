@@ -5,21 +5,23 @@
 /* Includes ------------------------------------------------------------------*/
 #include "main.h"
 
-/* Defines -------------------------------------------------------------------*/
-#define SLEEP 0
-#define ESP8266_sec 1000000
+// ----------------------------------------------------------------------------
+// Global variables
+// ----------------------------------------------------------------------------
+int8_t error;
+uint8_t batteryPercentage;
 
 Display display;
 Connection connection;
+Battery battery;
 Main main;
-int8_t error;
 
 // ----------------------------------------------------------------------------
 // Main (Setup)
 // ----------------------------------------------------------------------------
 void setup(){
-  pinMode(MOSFET, OUTPUT);
   display.initDisplay();
+  battery.batteryPercentage();
   while(!Serial);
   error = connection.WiFi_innit(display);
   if(error == -1){

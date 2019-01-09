@@ -5,7 +5,11 @@
 #include "display.h"
 #include "connection.h"
 #include "battery.h"
-unsigned char MOSFET = D3;
+
+
+/* Defines -------------------------------------------------------------------*/
+#define SLEEP 0
+#define ESP8266_sec 1000000
 
 class Main
 {

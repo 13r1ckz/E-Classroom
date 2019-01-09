@@ -4,14 +4,17 @@
 #ifndef CONNECTION_H
 #define CONNECTION_H
 
+/* Defines ------------------------------------------------------------------*/
+#define PI_SERVER 1
+#define WIFI_CONNECTION_TIMEOUT 20
+#define NUMBER_OF_DISPLAY_ELEMENTS 9
+
 /* Includes ------------------------------------------------------------------*/
 #include <Arduino.h>
 #include <ESP8266WiFi.h>
 #include <ESP8266HTTPClient.h>
 #include "display.h"
-extern "C"{
-	#include <node.h>
-}
+#include "battery.h"
 
 /* Classes -------------------------------------------------------------------*/
 class Connection{

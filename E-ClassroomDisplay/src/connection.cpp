@@ -4,18 +4,13 @@
 
 /* Includes ------------------------------------------------------------------*/
 #include "connection.h"
-#include "display.h"
 
-/* Defines ------------------------------------------------------------------*/
-#define PI_SERVER 1
-#define WIFI_CONNECTION_TIMEOUT 20
+#define MAX_TCP_MSG_SIZE 65535
+#define DEBUG 1
 
 // ----------------------------------------------------------------------------
 // Functions
 // ----------------------------------------------------------------------------
-#define MAX_TCP_MSG_SIZE 65535
-#define DEBUG 1
-
 #if PI_SERVER
     const char *ssid = "devices";
     const char *password = "toitoitoi";
@@ -30,9 +25,7 @@
 IPAddress static_ip(145,44,187,12);
 IPAddress gateway(145,44,187,1);
 IPAddress subnet(255,255,255,128);
-nodeList *data = (struct NodeList*) malloc(sizeof(nodeList));
-nodeListList *dataList = (struct NodeListList*) malloc(sizeof(NodeListList));
-String dataStrings[9];
+String dataStrings[NUMBER_OF_DISPLAY_ELEMENTS];
 
 uint32_t Connection::getMin(){
     return minutes * 60;
@@ -70,7 +63,6 @@ int8_t Connection::WiFi_innit(Display display){
 }
 
 int8_t Connection::TCPConnect(Display display){
-    String screenData = "T5.50;College Lokaal;11:30 - 13:30;13:30 - 15:30;Engels 2;Engels 1;Gidooooo;Tijntje;17:30;]";
     WiFiClient client;
     if(!client.connect(host, port)){
         #if DEBUG
@@ -83,20 +75,16 @@ int8_t Connection::TCPConnect(Display display){
             Serial.println(port);
         #endif
     }
-    TCPsendRequest("Gentstudent.b", client);
+    String senddata = WiFi.macAddress() + ";" + getBatteryPercentage() + '\3';
+    TCPsendRequest(senddata, client);
     parsePacket((TCPreceivePacket(client)));
-
-    //parsePacket(screenData);
-
     setAllScreenData(display);
-
     TCPcloseConnection(client);
     return 1;
 }
 
 void Connection::TCPsendRequest(String string, WiFiClient client){
     client.println(string);
-    client.println(WiFi.macAddress());
 }
 
 void Connection::TCPcloseConnection(WiFiClient client){
@@ -130,7 +118,7 @@ void Connection::parsePacket(String string){
     uint16_t beginPos = 0;
     uint16_t endPos = 0;
     String temp;
-    while(string[i] != MAX_TCP_MSG_SIZE && string[i] != ']'){
+    while(string[i] != MAX_TCP_MSG_SIZE && string[i] != '\3'){
         if(string[i] == delimiter){
             endPos = i;
             temp = string.substring(beginPos, endPos);
@@ -138,9 +126,6 @@ void Connection::parsePacket(String string){
             stringPosition++;
             beginPos = endPos + 1;
         }
-        
-        //Serial.println(i);
-        
         i++;
     }
     #if DEBUG
