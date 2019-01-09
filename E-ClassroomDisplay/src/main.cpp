@@ -47,12 +47,22 @@ void loop(){
 // ----------------------------------------------------------------------------
 // Functions
 // ----------------------------------------------------------------------------
+/**
+* @brief Sets system to Sleep for given amount of time
+* @retuns None
+* @note Needs min and sec
+*/
 void Main::setSleep(uint32_t min, uint8_t sec){
   uint32_t time;
   time = (min + sec)*ESP8266_sec;
   ESP.deepSleep(time);
 }
 
+/**
+* @brief Sets testdata
+* @retuns None
+* @note Temp test function
+*/
 void Main::setTestData(){
   display.setClassroom("T5.66");
   display.setClassroomText("Collegezaal-(M)-Theorie");

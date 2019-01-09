@@ -1,4 +1,4 @@
-	 /******************************************************************************
+/******************************************************************************
  * File : Display.cpp
  ******************************************************************************/
 
@@ -24,60 +24,130 @@ String timeFree;
 // ----------------------------------------------------------------------------
 // Functions
 // ----------------------------------------------------------------------------
+/**
+* @brief Initializes display at defined baudrate.
+* @retuns None
+* @note
+*/
 void Display::initDisplay(){
 	ePaper.init(baudrate);
 }
 
+/**
+* @brief Updates display with data created in drawDisplayCallback.
+* @retuns None
+* @note
+*/
 void Display::updateDisplay(){
 	ePaper.drawPaged(drawDisplayCallback);
 }
 
+/**
+* @brief Sets Classroom to given string.
+* @retuns None 
+* @note
+*/
 void Display::setClassroom(String s){
 	classroom = s;
 }
 
+/**
+* @brief Sets ClassroomText to given string.
+* @retuns None 
+* @note
+*/
 void Display::setClassroomText(String s){
 	classroomText = s;
 }
 
+/**
+* @brief Sets Time for field 1 to given string.
+* @retuns None 
+* @note
+*/
 void Display::setTime1(String s){
 	time1 = s;
 }
 
+/**
+* @brief Sets Time for field 2 to given string.
+* @retuns None 
+* @note
+*/
 void Display::setTime2(String s){
 	time2 = s;
 }
 
+/**
+* @brief Sets Lecture for field 1 to given string.
+* @retuns None 
+* @note
+*/
 void Display::setLecture1(String s){
 	lecture1 = s;
 }
 
+/**
+* @brief Sets Lecture for field 2 to given string.
+* @retuns None 
+* @note
+*/
 void Display::setLecture2(String s){
 	lecture2 = s;
 }
 
+/**
+* @brief Sets Teacher for field 1 to given string.
+* @retuns None 
+* @note
+*/
 void Display::setTeacher1(String s){
 	teacher1 = s;
 }
 
+/**
+* @brief Sets Teacher for field 2 to given string.
+* @retuns None 
+* @note
+*/
 void Display::setTeacher2(String s){
 	teacher2 = s;
 }
 
+/**
+* @brief Sets TimeFree field to given string.
+* @retuns None 
+* @note
+*/
 void Display::setTimeFree(String s){
 	timeFree = s;
 }
 
+/**
+* @brief Draws logo on defined location.
+* @retuns None 
+* @note
+*/
 void Display::drawLogo(){
 	ePaper.drawBitmap(gImage_Logo, xLogo, yLogo, logo_width, logo_height, GxEPD_BLACK);
 }
 
+/**
+* @brief Draws lines at defined locations.
+* @retuns None 
+* @note
+*/
 void Display::drawLines(){
 	ePaper.fillRect(xOffSetLine, yLine1, lineWidth, lineHeight, GxEPD_BLACK);
 	ePaper.fillRect(xOffSetLine, yLine2, lineWidth, lineHeight, GxEPD_BLACK);
 	ePaper.fillRect(xOffSetLine, yLine3, lineWidth, lineHeight, GxEPD_BLACK);
 }
 
+/**
+* @brief Draws Room number and name at defined location.
+* @retuns None 
+* @note
+*/
 void Display::drawClassroom(){
 	ePaper.setTextColor(GxEPD_BLACK);
 	//Room Number
@@ -90,6 +160,11 @@ void Display::drawClassroom(){
 	ePaper.print(classroomText);
 }
 
+/**
+* @brief Draws lecture field 1 to defined location.
+* @retuns None 
+* @note
+*/
 void Display::drawLecture1(){
 	ePaper.setTextColor(GxEPD_BLACK);
 	// Time
@@ -105,6 +180,11 @@ void Display::drawLecture1(){
 	ePaper.print(teacher1);
 }
 
+/**
+* @brief Draws lecture field 2 to defined location.
+* @retuns None 
+* @note
+*/
 void Display::drawLecture2(){
 	ePaper.setTextColor(GxEPD_BLACK);
 	// Time
@@ -120,6 +200,11 @@ void Display::drawLecture2(){
 	ePaper.print(teacher2);
 }
 
+/**
+* @brief Draws FreeFrom field to defined location.
+* @retuns None 
+* @note
+*/
 void Display::drawFreeFrom(){
 	if(timeFree != NULL){
 		ePaper.setTextColor(GxEPD_BLACK);
@@ -130,6 +215,11 @@ void Display::drawFreeFrom(){
 	}
 }
 
+/**
+* @brief Executes drawfunctions for layout.
+* @retuns None 
+* @note
+*/
 void Display::drawDisplay(){
 	this->drawLogo();
 	this->drawLines();
@@ -139,6 +229,11 @@ void Display::drawDisplay(){
 	this->drawFreeFrom();
 }
 
+/**
+* @brief Callback function to connect display library to drawDisplay function.
+* @retuns None 
+* @note
+*/
 void drawDisplayCallback(){
 	Display display;
 	display.drawDisplay();
