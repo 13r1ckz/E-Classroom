@@ -1,7 +1,7 @@
 OBJS = curlrq.o  
 CC = gcc
-CFLAGS =
-LFLAGS =
+CFLAGS = -lcurl
+LFLAGS = -lcurl
 NAME = curlRequest
 
 
