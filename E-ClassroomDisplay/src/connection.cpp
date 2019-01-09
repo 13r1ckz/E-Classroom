@@ -4,6 +4,10 @@
 
 /* Includes ------------------------------------------------------------------*/
 #include "connection.h"
+#include "display.h"
+
+/* Defines ------------------------------------------------------------------*/
+#define PI_SERVER 1
 
 // ----------------------------------------------------------------------------
 // Functions
@@ -11,16 +15,23 @@
 #define MAX_TCP_MSG_SIZE 65535
 #define DEBUG 1
 
-const char *ssid = "devices";
-const char *password = "toitoitoi";
-const uint16_t port = 420;
-const char* host=  "145.44.187.11";
+#if PI_SERVER
+    const char *ssid = "devices";
+    const char *password = "toitoitoi";
+    const uint16_t port = 420;
+    const char* host=  "145.44.187.11";
+#else
+    const char *ssid = "Rick's test netwerk";
+    const char *password = "stuff123";
+    const uint16_t port = 420;
+    const char* host=  "192.168.0.101";
+#endif
 IPAddress static_ip(145,44,187,12);
 IPAddress gateway(145,44,187,1);
 IPAddress subnet(255,255,255,128);
 
 nodeList *data = (struct NodeList*) malloc(sizeof(nodeList));
-
+nodeListList *dataList = (struct NodeListList*) malloc(sizeof(NodeListList));
 
 uint32_t Connection::getMin(){
     return minutes * 60;
@@ -113,15 +124,84 @@ void Connection::parsePacket(String string){
     String temp;
     while(string[i] != MAX_TCP_MSG_SIZE && string[i] != '\3'){
         if(string[i] == delimiter){
+            i++;
             endPos = i;
             temp = string.substring(beginPos, endPos);
-            Serial.println(temp);
+            #if DEBUG
+                Serial.println("Parsepacket function");
+                Serial.println(temp);
+            #endif
             addStrToList(data, (char *)temp.c_str());
-            i++;
+            addNodeListToNodeListList(dataList ,data);
         }
         i++;
         beginPos = endPos;
     }
-    // string = string.substring(0,2);
-    // Serial.println(string);
+}
+
+void setAllScreenData(Display display){
+    String temp;
+    NodeList *tempList = (struct NodeList*) malloc(sizeof(nodeList));
+    if(dataList->head == NULL){
+        Serial.println("ERROR");
+        return;
+    }
+    tempList = dataList->head;
+    listToStr(tempList, (char *)temp.c_str(), 0, tempList->size);
+    Serial.println("Printing temp");
+    Serial.println(temp);
+    display.setClassroom(temp);
+    #if DEBUG
+        Serial.println(temp);
+    #endif
+    tempList = (NodeList*) tempList->next;
+    
+    listToStr(tempList, (char *)temp.c_str(), 0, tempList->size);
+    display.setClassroomText(temp);
+    #if DEBUG
+        Serial.println(temp);
+    #endif
+    tempList = (NodeList*) tempList->next;
+
+    listToStr(tempList, (char *)temp.c_str(), 0, tempList->size);
+    display.setTime1(temp);
+    #if DEBUG
+        Serial.println(temp);
+    #endif
+    tempList = (NodeList*) tempList->next;
+    
+    listToStr(tempList, (char *)temp.c_str(), 0, tempList->size);
+    display.setTime2(temp);
+    #if DEBUG
+        Serial.println(temp);
+    #endif
+    tempList = (NodeList*) tempList->next;
+
+    listToStr(tempList, (char *)temp.c_str(), 0, tempList->size);
+    display.setLecture1(temp);
+    #if DEBUG
+        Serial.println(temp);
+    #endif
+    tempList = (NodeList*) tempList->next;
+
+    listToStr(tempList, (char *)temp.c_str(), 0, tempList->size);
+    display.setLecture2(temp);
+    #if DEBUG
+        Serial.println(temp);
+    #endif
+    tempList = (NodeList*) tempList->next;
+
+    listToStr(tempList, (char *)temp.c_str(), 0, tempList->size);
+    display.setTeacher1(temp);
+    #if DEBUG
+        Serial.println(temp);
+    #endif
+    tempList = (NodeList*) tempList->next;
+
+    listToStr(tempList, (char *)temp.c_str(), 0, tempList->size);
+    display.setTeacher2(temp);
+    #if DEBUG
+        Serial.println(temp);
+    #endif
+    tempList = (NodeList*) tempList->next;
 }

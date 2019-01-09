@@ -66,9 +66,9 @@ class Display{
     void setTeacher2(String s);
     void setTimeFree(String s);
     void drawDisplay();
-  private:
-    void drawLogo();
+  protected:
     void drawLines();
+    void drawLogo();
     void drawClassroom();
     void drawLecture1();
     void drawLecture2();

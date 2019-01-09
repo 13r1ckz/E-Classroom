@@ -29,6 +29,6 @@ class Connection{
     void TCPcloseConnection(WiFiClient client);
     String TCPreceivePacket(WiFiClient client);
     void parsePacket(String string);
-    void setAllScreenData(NodeList nodelist);
+    void setAllScreenData(Display display);
 };
 #endif
