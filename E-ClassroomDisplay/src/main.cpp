@@ -6,12 +6,13 @@
 #include "main.h"
 
 /* Defines -------------------------------------------------------------------*/
-#define SLEEP 1
+#define SLEEP 0
 #define ESP8266_sec 1000000
 
 Display display;
 Connection connection;
 Main main;
+int8_t error;
 
 // ----------------------------------------------------------------------------
 // Main (Setup)
@@ -20,9 +21,14 @@ void setup(){
   main.setTestData();
   display.initDisplay();
   while(!Serial);
+  error = connection.WiFi_innit(display);
+  if(error == -1){
+    Serial.println("Going into bitch ass sleep");
+    main.setSleep(0, 30);
+  }
   display.updateDisplay();
-  connection.WiFi_innit(display);
   #if SLEEP
+    Serial.println("Going to sleep.");
     main.setSleep(connection.getMin(), connection.getSec());
   #else
     Serial.println("Running without sleep mode.");

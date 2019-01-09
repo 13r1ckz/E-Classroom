@@ -18,13 +18,13 @@ class Connection{
   public:
     uint32_t getMin();
     uint8_t getSec();
-    void WiFi_innit(Display display);
+    int8_t WiFi_innit(Display display);
     int getBatteryStatus();
 
   protected:
     uint8_t seconds;
-    uint32_t minutes;
-    void TCPConnect(Display display);
+    uint32_t minutes = 15;
+    int8_t TCPConnect(Display display);
     void TCPsendRequest(String string, WiFiClient client);
     void TCPcloseConnection(WiFiClient client);
     String TCPreceivePacket(WiFiClient client);
