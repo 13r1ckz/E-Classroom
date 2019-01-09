@@ -15,7 +15,7 @@ int main(void){
     curl = curl_easy_init();
     if(curl) {
         curl_easy_setopt(curl, CURLOPT_CUSTOMREQUEST, "POST");
-        curl_easy_setopt(curl, CURLOPT_URL, "https://roostertest.windesheim.nl/WebUntis/Timetable.do?request.preventCache=1543327601812&ajaxCommand=getPageConfig&type=4");
+        curl_easy_setopt(curl, CURLOPT_URL, "https://roostertest.windesheim.nl/WebUntis/Timetable.do?request.preventCache=1543327601812&ajaxCommand=getWeeklyTimetable&elementType=4&date=20190109&departmentId=0&filterId=2&elementId=328");
         curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, WriteCallback);
         curl_easy_setopt(curl, CURLOPT_WRITEDATA, &readBuffer);
        // curl_easy_setopt(curl, CURLOPT_SSL_VERIFYPEER, 0L);
@@ -26,4 +26,5 @@ int main(void){
     }
     std::cout << res << std::endl;
     std::cout << readBuffer << std::endl;
+	
 }
