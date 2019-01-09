@@ -18,7 +18,7 @@ int8_t error;
 // Main (Setup)
 // ----------------------------------------------------------------------------
 void setup(){
-  main.setTestData();
+  pinMode(MOSFET, OUTPUT);
   display.initDisplay();
   while(!Serial);
   error = connection.WiFi_innit(display);

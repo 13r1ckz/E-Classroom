@@ -20,7 +20,6 @@ class Connection{
     uint8_t getSec();
     int8_t WiFi_innit(Display display);
     int getBatteryStatus();
-
   protected:
     uint8_t seconds;
     uint32_t minutes = 15;
