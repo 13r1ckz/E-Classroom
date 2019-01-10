@@ -28,18 +28,24 @@ int main(void){
     const Json::Value& characters = obj["result"]["data"]["elementPeriods"]["328"]; // array of characters
     for (int i = 0; i < characters.size(); i++){
         std::cout << " " <<std::endl;
-	std::cout << "      Name: " << characters[i]["lessonText"] << std::endl;
-        std::cout << "start Time: " << characters[i]["startTime"]  << std::endl;
-        std::cout << "  end Time: " << characters[i]["endTime"]    << std::endl;
+	std::cout << "        Name: " << characters[i]["lessonText"] << std::endl;
+        std::cout << "  start Time: " << characters[i]["startTime"]  << std::endl;
+        std::cout << "    end Time: " << characters[i]["endTime"]    << std::endl;
 	
-	const Json::Value& teatcherid = characters[i]["elements"];
-	for (int j =0; j < teatcherid.size(); j++){
-		//if(teatcherid[j]["type"].asUInt() = 2){
-			std::cout << " teatcher ID" << teatcherid[j]["id"] << std::endl;
-		//}
+	const Json::Value& teacherid = characters[i]["elements"];
+	for (int j =0; j < teacherid.size(); j++){
+		int type = teacherid[j]["type"].asInt();
+		if(type == 2){
+			int teacherId = teacherid[j]["id"].asInt();
+			const Json::Value& teacherNameJson = obj["result"]["data"]["elements"];	
+			for (int k = 0; k < teacherNameJson.size(); k++){
+				if(teacherNameJson[k]["id"] == teacherId){
+					std::cout << "teacher name: " << teacherNameJson[k]["displayname"] << std::endl;
+				}
+			}
+		}
 	}
     }
-std::cout << "yeet" << std::endl;
 
 }
 
