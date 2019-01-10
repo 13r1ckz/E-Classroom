@@ -24,8 +24,8 @@ class Connection{
     int8_t WiFi_innit(Display display);
     int getBatteryStatus();
   protected:
-    uint8_t seconds = 10;
-    uint32_t minutes = 0;
+    uint8_t seconds = 0;
+    uint32_t minutes = 15;
     int8_t TCPConnect(Display display);
     void TCPsendRequest(String string, WiFiClient client);
     void TCPcloseConnection(WiFiClient client);

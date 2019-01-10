@@ -8,7 +8,7 @@
 // ----------------------------------------------------------------------------
 // Global variables
 // ----------------------------------------------------------------------------
-int8_t error;
+int8_t state;
 uint8_t batteryPercentage;
 
 Display display;
@@ -23,13 +23,17 @@ void setup(){
   display.initDisplay();
   battery.batteryPercentage();
   while(!Serial);
-  error = connection.WiFi_innit(display);
-  if(error == -1){
-    //Serial.println("Sleeping for 30 seconds");
-    main.setSleep(0, 30);
+  state = connection.WiFi_innit(display);
+  if(state == 1){
+    Serial.println("Sleeping for 5 seconds");
+    main.setSleep(60, 0);
   }
-  if(error == -2){
-    //Serial.println("Sleeping for 5 seconds");
+  if(state == -1){
+    Serial.println("Sleeping for 10 seconds");
+    main.setSleep(0, 10);
+  }
+  if(state == -2){
+    Serial.println("Sleeping for 5 seconds");
     main.setSleep(0, 5);
   }
   display.updateDisplay();
@@ -58,7 +62,7 @@ void loop(){
 */
 void Main::setSleep(uint32_t min, uint8_t sec){
   uint32_t time;
-  time = (min + sec)*ESP8266_sec;
+  time = ((min*60) + sec)*ESP8266_sec;
   ESP.deepSleep(time);
 }
 
