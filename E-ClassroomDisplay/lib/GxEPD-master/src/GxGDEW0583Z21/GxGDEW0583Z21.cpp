@@ -83,7 +83,7 @@ void GxGDEW0583Z21::init(uint32_t serial_diag_bitrate)
   if (serial_diag_bitrate > 0)
   {
     Serial.begin(serial_diag_bitrate);
-    _diag_enabled = true;
+    _diag_enabled = false;
   }
   IO.init();
   IO.setFrequency(4000000); // 4MHz

@@ -5,7 +5,7 @@
 /* Includes ------------------------------------------------------------------*/
 #include "connection.h"
 
-#define MAX_TCP_MSG_SIZE 65535
+#define MAX_TCP_MSG_SIZE 655
 #define DEBUG 1
 
 // ----------------------------------------------------------------------------
@@ -22,7 +22,7 @@
     const uint16_t port = 420;
     const char* host=  "192.168.0.101";
 #endif
-IPAddress static_ip(145,44,187,12);
+IPAddress static_ip(145,44,187,13);
 IPAddress gateway(145,44,187,1);
 IPAddress subnet(255,255,255,128);
 String dataStrings[NUMBER_OF_DISPLAY_ELEMENTS];
@@ -43,7 +43,7 @@ int8_t Connection::WiFi_innit(Display display){
     while(WiFi.status()!=WL_CONNECTED){
         if(WiFiCount > WIFI_CONNECTION_TIMEOUT){
             Serial.println("WiFi connect timeout");
-            error = -1;
+            error = -2;
             return error;
         }
         delay(500);
@@ -75,8 +75,7 @@ int8_t Connection::TCPConnect(Display display){
             Serial.println(port);
         #endif
     }
-    String senddata = WiFi.macAddress() + ";" + getBatteryPercentage() + '\3';
-    TCPsendRequest(senddata, client);
+    TCPsendRequest(WiFi.macAddress() + ";" + getBatteryPercentage() + '\3', client);
     parsePacket((TCPreceivePacket(client)));
     setAllScreenData(display);
     TCPcloseConnection(client);
@@ -103,22 +102,15 @@ String Connection::TCPreceivePacket(WiFiClient client){
     return packet;
 }
 
-int Connection::getBatteryStatus(){
-    //analogRead();
-    #if DEBUG
-        Serial.println("Batterij is kanker vol");
-    #endif
-    return 1;
-}
-
 void Connection::parsePacket(String string){
+    Serial.println("Kut lezen");
     uint8_t stringPosition = 0;
     uint16_t i = 0;
     const char delimiter = ';';
     uint16_t beginPos = 0;
     uint16_t endPos = 0;
     String temp;
-    while(string[i] != MAX_TCP_MSG_SIZE && string[i] != '\3'){
+    while(i < MAX_TCP_MSG_SIZE && string[i] != '\3'){
         if(string[i] == delimiter){
             endPos = i;
             temp = string.substring(beginPos, endPos);

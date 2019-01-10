@@ -25,12 +25,16 @@ void setup(){
   while(!Serial);
   error = connection.WiFi_innit(display);
   if(error == -1){
-    Serial.println("Going into bitch ass sleep");
+    //Serial.println("Sleeping for 30 seconds");
     main.setSleep(0, 30);
+  }
+  if(error == -2){
+    //Serial.println("Sleeping for 5 seconds");
+    main.setSleep(0, 5);
   }
   display.updateDisplay();
   #if SLEEP
-    Serial.println("Going to sleep.");
+    //Serial.println("Going to sleep.");
     main.setSleep(connection.getMin(), connection.getSec());
   #else
     Serial.println("Running without sleep mode.");

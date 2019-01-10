@@ -8,7 +8,7 @@
 
 
 /* Defines -------------------------------------------------------------------*/
-#define SLEEP 0
+#define SLEEP 1
 #define ESP8266_sec 1000000
 
 class Main

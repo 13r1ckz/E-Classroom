@@ -312,7 +312,7 @@ void GxGDEW0583T7::_wakeUp()
   IO.writeCommandTransaction(0xe5); //FLASH MODE
   IO.writeDataTransaction(0x03);
   IO.writeCommandTransaction(0x04); //POWER ON
-  _waitWhileBusy("Power On");
+  //_waitWhileBusy("Power On");
 }
 
 void GxGDEW0583T7::_sleep(void)
@@ -325,7 +325,7 @@ void GxGDEW0583T7::_sleep(void)
   IO.writeDataTransaction(0x00);
   /**********************************flash sleep**********************************/
   IO.writeCommandTransaction(0x02); // POWER OFF
-  _waitWhileBusy("Power Off");
+  //_waitWhileBusy("Power Off");
   if (_rst >= 0)
   {
     IO.writeCommandTransaction(0x07); // DEEP SLEEP
@@ -358,6 +358,6 @@ void GxGDEW0583T7::drawPaged(void (*drawCallback)(void))
   }
   _current_page = -1;
   IO.writeCommandTransaction(0x12);      //display refresh
-  _waitWhileBusy("drawPaged");
+  //_waitWhileBusy("drawPaged");
   _sleep();
 }
