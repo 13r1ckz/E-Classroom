@@ -129,7 +129,7 @@ void Display::setTimeFree(String s){
 * @note
 */
 void Display::drawLogo(){
-	ePaper.drawBitmap(gImage_Logo, xLogo, yLogo, logo_width, logo_height, GxEPD_BLACK);
+	ePaper.drawBitmap(gImage_Logov2, xLogo, yLogo, logo_width, logo_height, GxEPD_BLACK);
 }
 
 /**

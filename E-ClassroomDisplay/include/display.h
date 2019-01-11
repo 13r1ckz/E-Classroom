@@ -20,7 +20,7 @@
 #include <Fonts/Roboto_Mono_Bold_48.h>
 #include <Fonts/Roboto_Mono_Bold_100.h>
 //bitmap libs
-#include <imglib/logo.h>
+#include <imglib/logov2.h>
 
 /* Defines -------------------------------------------------------------------*/
 #define CS_pin      2   /*CS-D4-GPIO2*/
