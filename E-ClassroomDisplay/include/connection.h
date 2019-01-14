@@ -5,9 +5,13 @@
 #define CONNECTION_H
 
 /* Defines ------------------------------------------------------------------*/
-#define PI_SERVER 1
+#define PI_SERVER 0
 #define WIFI_CONNECTION_TIMEOUT 20
 #define NUMBER_OF_DISPLAY_ELEMENTS 9
+#define MAX_TCP_MSG_SIZE 655
+#define DEBUG 1
+#define YES 1
+#define NO 0
 
 /* Includes ------------------------------------------------------------------*/
 #include <Arduino.h>

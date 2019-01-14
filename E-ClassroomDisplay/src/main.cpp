@@ -24,8 +24,8 @@ void setup(){
   battery.batteryPercentage();
   while(!Serial);
   state = connection.WiFi_innit(display);
-  if(state == 1){
-    Serial.println("Sleeping for 5 seconds");
+  if(state == 3){
+    Serial.println("Sleeping for 60 min");
     main.setSleep(60, 0);
   }
   if(state == -1){
@@ -33,8 +33,8 @@ void setup(){
     main.setSleep(0, 10);
   }
   if(state == -2){
-    Serial.println("Sleeping for 5 seconds");
-    main.setSleep(0, 5);
+    Serial.println("Sleeping for 10 seconds");
+    main.setSleep(0, 10);
   }
   display.updateDisplay();
   #if SLEEP

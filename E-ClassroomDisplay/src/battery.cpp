@@ -31,6 +31,7 @@ float Battery::getVoltage(){
   sample = sample / 10; 
   volt = voltReduction * sample * espVoltage/ maxAnalogValue; 
   volt = volt - offset;
+  Serial.println(volt);
   return volt;
 }
  uint8_t getBatteryPercentage(){

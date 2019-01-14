@@ -5,10 +5,6 @@
 /* Includes ------------------------------------------------------------------*/
 #include "connection.h"
 
-#define MAX_TCP_MSG_SIZE 655
-#define DEBUG 1
-#define YES 1
-#define NO 0
 // ----------------------------------------------------------------------------
 // Functions
 // ----------------------------------------------------------------------------
@@ -17,17 +13,22 @@
     const char *password = "toitoitoi";
     const uint16_t port = 420;
     const char* host=  "145.44.187.11";
+    IPAddress static_ip(145,44,187,14);
+    IPAddress gateway(145,44,187,1);
+    IPAddress subnet(255,255,255,128);
 #else
     const char *ssid = "Rick's test netwerk";
     const char *password = "stuff123";
     const uint16_t port = 420;
-    const char* host=  "192.168.0.101";
+    const char* host=  "192.168.0.100";
+    IPAddress static_ip(192,168,0,105);
+    IPAddress gateway(192,168,0,1);
+    IPAddress subnet(255,255,255,0);
 #endif
-IPAddress static_ip(145,44,187,13);
-IPAddress gateway(145,44,187,1);
-IPAddress subnet(255,255,255,128);
+
+
 String dataStrings[NUMBER_OF_DISPLAY_ELEMENTS];
-uint8_t evening;
+uint8_t evening  = NO;
 
 uint32_t Connection::getMin(){
     return minutes;
@@ -63,16 +64,18 @@ int8_t Connection::WiFi_innit(Display display){
         Serial.println(WiFi.localIP());
     #endif
     error = TCPConnect(display);
-    while((dataStrings[0] == "") && (maxTCPRequest < 5)){
+    while((dataStrings[0] == "") && (maxTCPRequest < 3)){
         Serial.println("tcp niet goed ontvangen");
         error = TCPConnect(display);
         maxTCPRequest++;
     }
     if(evening == YES){
-        error = 1;
+        error = 3;
         return error;
     }
     else if(!(dataStrings[0] == "")){
+        WiFi.forceSleepBegin();
+        delay(1);
         setAllScreenData(display); 
         return error;
     }  
@@ -138,7 +141,7 @@ void Connection::parsePacket(String string){
             beginPos = endPos + 1;
         }
         if(string[i] == '\4'){
-            evening = NO;
+            evening = YES;
             break;
         }
         i++;
