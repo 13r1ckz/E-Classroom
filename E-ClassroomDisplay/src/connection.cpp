@@ -47,7 +47,9 @@ int8_t Connection::WiFi_innit(Display display){
     WiFi.config(static_ip, gateway, subnet);
     while(WiFi.status()!=WL_CONNECTED){
         if(WiFiCount > WIFI_CONNECTION_TIMEOUT){
-            Serial.println("WiFi connect timeout");
+            #if DEBUG
+                Serial.println("WiFi connect timeout");
+            #endif
             error = -2;
             return error;
         }
@@ -64,8 +66,10 @@ int8_t Connection::WiFi_innit(Display display){
         Serial.println(WiFi.localIP());
     #endif
     error = TCPConnect(display);
-    while((dataStrings[0] == "") && (maxTCPRequest < 3)){
-        Serial.println("tcp niet goed ontvangen");
+    while((dataStrings[0] == "") && (maxTCPRequest < 5)){
+        #if DEBUG
+            Serial.println("TCP message incomplete");
+        #endif
         error = TCPConnect(display);
         maxTCPRequest++;
     }
@@ -87,7 +91,6 @@ int8_t Connection::WiFi_innit(Display display){
 
 int8_t Connection::TCPConnect(Display display){
     WiFiClient client;
-
     if(!client.connect(host, port)){
         #if DEBUG
             Serial.println("TCP connection failed");
