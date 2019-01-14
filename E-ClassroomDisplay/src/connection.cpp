@@ -96,7 +96,7 @@ int8_t Connection::TCPConnect(Display display){
         #if DEBUG
             Serial.println("TCP connection failed");
         #endif
-        return -1;
+        return TCP_CONNECTION_TIMEOUT_ERROR;
     } else {
         #if DEBUG
             Serial.print("Connection established on port: ");
@@ -106,7 +106,7 @@ int8_t Connection::TCPConnect(Display display){
     TCPsendRequest(WiFi.macAddress() + ";" + getBatteryPercentage() + TCP_END_OF_TRANSMISSION, client);
     parsePacket((TCPreceivePacket(client)));
     TCPcloseConnection(client);
-    return 1;
+    return NO_ERROR;
 }
 
 void Connection::TCPsendRequest(String string, WiFiClient client){
