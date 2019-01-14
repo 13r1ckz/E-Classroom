@@ -85,30 +85,30 @@ void getLessonInfo(){
 * @note needs a pointer to a string buffer & RoomID int
 */
 std::string curlRequest(int ID){
-    CURL *curl;
-    CURLcode res;
-    std::string URLString = getCurlURL(ID);
+	CURL *curl;
+	CURLcode res;
+	std::string URLString = getCurlURL(ID);
 	std::string buffer;
-    //String to Char array
-    char * URL = new char [URLString.length()+1];
-    strcpy(URL, URLString.c_str());
-    curl = curl_easy_init();
-    if(curl){
-        curl_easy_setopt(curl, CURLOPT_URL, URL);
-        curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, WriteCallback);
-        curl_easy_setopt(curl, CURLOPT_WRITEDATA, buffer);
-        curl_easy_setopt(curl, CURLOPT_SSL_VERIFYPEER, 0L);
-        curl_easy_setopt(curl, CURLOPT_SSL_VERIFYHOST, 0L);
-        curl_easy_setopt(curl, CURLOPT_COOKIE, "schoolname=\"Windesheim\"");
-        res = curl_easy_perform(curl);
-        /* Check for errors */
-        if(res != CURLE_OK){
+	//String to Char array
+	char * URL = new char [URLString.length()+1];
+	strcpy(URL, URLString.c_str());
+	curl = curl_easy_init();
+	if(curl){
+		curl_easy_setopt(curl, CURLOPT_URL, URL);
+		curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, WriteCallback);
+		curl_easy_setopt(curl, CURLOPT_WRITEDATA, buffer);
+		curl_easy_setopt(curl, CURLOPT_SSL_VERIFYPEER, 0L);
+		curl_easy_setopt(curl, CURLOPT_SSL_VERIFYHOST, 0L);
+		curl_easy_setopt(curl, CURLOPT_COOKIE, "schoolname=\"Windesheim\"");
+		res = curl_easy_perform(curl);
+		/* Check for errors */
+		if(res != CURLE_OK){
 			fprintf(stderr, "curl_easy_perform() failed: %s\n", curl_easy_strerror(res));
 		}
-        /* always cleanup */
-        curl_easy_cleanup(curl);
-    }
-    curl_global_cleanup();
+		/* always cleanup */
+		curl_easy_cleanup(curl);
+	}
+	curl_global_cleanup();
 	return buffer;
 }
 
@@ -118,8 +118,8 @@ std::string curlRequest(int ID){
 * @note
 */
 static size_t WriteCallback(void *contents, size_t size, size_t nmemb, void *userp){
-    ((std::string*)userp)->append((char*)contents, size * nmemb);
-    return size * nmemb;
+	((std::string*)userp)->append((char*)contents, size * nmemb);
+	return size * nmemb;
 }
 
 /**
@@ -128,10 +128,10 @@ static size_t WriteCallback(void *contents, size_t size, size_t nmemb, void *use
 * @note Needs a RoomID
 */
 std::string getCurlURL(int ID){
-    std::string Date = getDateField();
-    std::string RoomID = getIdField(ID);
-    std::string URL = BaseURL + RequestClassData + Date + RoomID;
-    return URL;
+	std::string Date = getDateField();
+	std::string RoomID = getIdField(ID);
+	std::string URL = BaseURL + RequestClassData + Date + RoomID;
+	return URL;
 }
 
 /**
@@ -140,10 +140,10 @@ std::string getCurlURL(int ID){
 * @note
 */
 std::string getDateField(){
-    std::ostringstream streamDate;
-    streamDate << "date=" << getDate() << "&";
-    std::string Date(streamDate.str());
-    return Date;
+	std::ostringstream streamDate;
+	streamDate << "date=" << getDate() << "&";
+	std::string Date(streamDate.str());
+	return Date;
 }
 
 /**
@@ -152,12 +152,12 @@ std::string getDateField(){
 * @note
 */
 std::string getDate(){
-    time_t t = time(NULL);
-    tm* timePtr = localtime(&t);
-    std::ostringstream streamDate;
-    streamDate << (timePtr->tm_year + 1900) << std::setw(2) << std::setfill('0') << (timePtr->tm_mon + 1) << std::setw(2) << std::setfill('0') << timePtr->tm_mday;
-    std::string Date(streamDate.str());
-    return Date;
+	time_t t = time(NULL);
+	tm* timePtr = localtime(&t);
+	std::ostringstream streamDate;
+	streamDate << (timePtr->tm_year + 1900) << std::setw(2) << std::setfill('0') << (timePtr->tm_mon + 1) << std::setw(2) << std::setfill('0') << timePtr->tm_mday;
+	std::string Date(streamDate.str());
+	return Date;
 }
 
 /**
@@ -166,10 +166,10 @@ std::string getDate(){
 * @note Needs a RoomID
 */
 std::string getIdField(int ID){
-    std::ostringstream streamID;
-    streamID << "elementId=" << ID;
-    std::string RoomID(streamID.str());
-    return RoomID;
+	std::ostringstream streamID;
+	streamID << "elementId=" << ID;
+	std::string RoomID(streamID.str());
+	return RoomID;
 }
 
 /**
@@ -183,24 +183,24 @@ void parseJson(std::string* buffer){
 	Json::Reader reader;
 	reader.parse(*buffer, obj); // reader can also read strings
    	const Json::Value& characters = obj["result"]["data"]["elementPeriods"][std::to_string(ClassID)]; // array of characters
-   	for (int i = 0; i < characters.size(); i++){
-        if(characters[i]["date"].asString() == getDate()){
+	for (int i = 0; i < characters.size(); i++){
+		if(characters[i]["date"].asString() == getDate()){
 			if(characters[i]["endTime"].asInt() > getCurrentTime()){
 				if(lessonId != characters[i]["lessonId"].asInt()){
 					if(characters[i]["startTime"].asInt() < lessonTimeArray[1][1] || lessonTimeArray[1][1] == 0){
 						lessonAmount++;
 						moveLessonTimes(1);
-						lessonId		= characters[i]["lessonId"].asInt();
-						lessonName1		= characters[i]["lessonText"].asString();	//set lessonName1
-						lessonTime1		= getLessonTime(obj, lessonId, 1);	//set lessonTime1
-						lessonTeachers1 = getLessonTeachers(obj, i);				//set lessonTeachers1
+						lessonId	= characters[i]["lessonId"].asInt();
+						lessonName1	= characters[i]["lessonText"].asString();	//set lessonName1
+						lessonTime1	= getLessonTime(obj, lessonId, 1);		//set lessonTime1
+						lessonTeachers1	= getLessonTeachers(obj, i);			//set lessonTeachers1
 					} else if(characters[i]["startTime"].asInt() < lessonTimeArray[2][1] || lessonTimeArray[2][1] == 0){
 						lessonAmount++;
 						moveLessonTimes(2);
-						lessonId		= characters[i]["lessonId"].asInt();
-						lessonName2		= characters[i]["lessonText"].asString();	//set lessonName1
-						lessonTime2		= getLessonTime(obj, lessonId, 2);	//set lessonTime1
-						lessonTeachers2 = getLessonTeachers(obj, i);				//set lessonTeachers1
+						lessonId	= characters[i]["lessonId"].asInt();
+						lessonName2	= characters[i]["lessonText"].asString();	//set lessonName1
+						lessonTime2	= getLessonTime(obj, lessonId, 2);		//set lessonTime1
+						lessonTeachers2 = getLessonTeachers(obj, i);			//set lessonTeachers1
 					} else {
 						for(int j = 3; j > lessonAmount; j++){
 							if(characters[i]["startTime"].asInt() < lessonTimeArray[j][1] || lessonTimeArray[j][1] == 0){
@@ -224,10 +224,10 @@ void parseJson(std::string* buffer){
 * @note
 */
 int getCurrentTime(){
-    time_t t = time(NULL);
-    tm* timePtr = localtime(&t);
+	time_t t = time(NULL);
+	tm* timePtr = localtime(&t);
 	int time = (timePtr->tm_hour * 100) + timePtr->tm_min;
-    return time;
+	return time;
 }
 
 /**
@@ -237,9 +237,9 @@ int getCurrentTime(){
 */
 void moveLessonTimes(int lesson){
 	if(lesson == 1 && lessonName1 != ""){
-		lessonName2		= lessonName1;
-		lessonTime2		= lessonTime1;
-		lessonTeachers2 = lessonTeachers1;
+		lessonName2	= lessonName1;
+		lessonTime2	= lessonTime1;
+		lessonTeachers2	= lessonTeachers1;
 	}
 	for(int i = lessonAmount; i < lesson; i--){
 		lessonTimeArray[i][1] = lessonTimeArray[i-1][1];
@@ -257,7 +257,7 @@ std::string getLessonTime(Json::Value obj, int lessonId, int lesson){
 	int startTime = 2400;
 	int endTime = 0;
 	for (int i = 0; i < characters.size(); i++){
-        if(characters[i]["date"].asString() == getDate()){
+		if(characters[i]["date"].asString() == getDate()){
 			if(lessonId == characters[i]["lessonId"].asInt()){
 				if(characters[i]["startTime"].asInt() < startTime){
 					startTime = characters[i]["startTime"].asInt();
