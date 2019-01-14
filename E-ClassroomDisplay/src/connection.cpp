@@ -37,6 +37,7 @@ uint8_t Connection::getSec(){
     return seconds;
 }
 
+//This function start the WiFi module and connect to the WiFi network. The function returns error codes from possible timeouts.
 int8_t Connection::WiFi_innit(Display display){
     int8_t error;
     uint8_t WiFiCount = 0;
@@ -88,6 +89,7 @@ int8_t Connection::WiFi_innit(Display display){
     }
 }
 
+//This function connects to the server with the use of the TCP protocol. After connecting it sends a request containing the MAC address of the module and the battery percentage of the module.
 int8_t Connection::TCPConnect(Display display){
     WiFiClient client;
     if(!client.connect(host, port)){
@@ -119,6 +121,7 @@ void Connection::TCPcloseConnection(WiFiClient client){
     client.stop();
 }
 
+//This connection receives the packet from the server and returns it. The packet ends with the character "TCP_END_OF_TRANSMISSION" ('\3').
 String Connection::TCPreceivePacket(WiFiClient client){
     String packet;
     #if DEBUG
@@ -131,6 +134,8 @@ String Connection::TCPreceivePacket(WiFiClient client){
     return packet;
 }
 
+//This function parses the received TCP packets. These packets contain variables seperated by ';'. At the end of a transmission the '\3' (TCP_END_OF_TRANSMISSION) character is used.
+//All variables that are parsed from the packet are stored in an array of strings called dataStrings.
 void Connection::parsePacket(String string){
     uint8_t stringPosition = 0;
     uint16_t i = 0;
