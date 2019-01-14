@@ -13,19 +13,18 @@
     const char *password = "toitoitoi";
     const uint16_t port = 420;
     const char* host=  "145.44.187.11";
-    IPAddress static_ip(145,44,187,14);
-    IPAddress gateway(145,44,187,1);
-    IPAddress subnet(255,255,255,128);
+    const IPAddress static_ip(145,44,187,14);
+    const IPAddress gateway(145,44,187,1);
+    const IPAddress subnet(255,255,255,128);
 #else
     const char *ssid = "Rick's test netwerk";
     const char *password = "stuff123";
     const uint16_t port = 420;
     const char* host=  "192.168.0.100";
-    IPAddress static_ip(192,168,0,105);
-    IPAddress gateway(192,168,0,1);
-    IPAddress subnet(255,255,255,0);
+    const IPAddress static_ip(192,168,0,105);
+    const IPAddress gateway(192,168,0,1);
+    const IPAddress subnet(255,255,255,0);
 #endif
-
 
 String dataStrings[NUMBER_OF_DISPLAY_ELEMENTS];
 uint8_t evening  = NO;
@@ -50,7 +49,7 @@ int8_t Connection::WiFi_innit(Display display){
             #if DEBUG
                 Serial.println("WiFi connect timeout");
             #endif
-            error = -2;
+            error = WIFI_CONNECTION_TIMEOUT_ERROR;
             return error;
         }
         delay(500);
@@ -74,7 +73,7 @@ int8_t Connection::WiFi_innit(Display display){
         maxTCPRequest++;
     }
     if(evening == YES){
-        error = 3;
+        error = LONG_SLEEP;
         return error;
     }
     else if(!(dataStrings[0] == "")){
@@ -84,7 +83,7 @@ int8_t Connection::WiFi_innit(Display display){
         return error;
     }  
     else {
-        error = -1;
+        error = TCP_CONNECTION_TIMEOUT_ERROR;
         return error;
     }
 }
@@ -102,7 +101,7 @@ int8_t Connection::TCPConnect(Display display){
             Serial.println(port);
         #endif
     }
-    TCPsendRequest(WiFi.macAddress() + ";" + getBatteryPercentage() + '\3', client);
+    TCPsendRequest(WiFi.macAddress() + ";" + getBatteryPercentage() + TCP_END_OF_TRANSMISSION, client);
     parsePacket((TCPreceivePacket(client)));
     TCPcloseConnection(client);
     return 1;
@@ -113,15 +112,19 @@ void Connection::TCPsendRequest(String string, WiFiClient client){
 }
 
 void Connection::TCPcloseConnection(WiFiClient client){
-    client.println("Closing connection");
+    #if DEBUG
+        client.println("Closing connection");
+    #endif
     client.flush();
     client.stop();
 }
 
 String Connection::TCPreceivePacket(WiFiClient client){
     String packet;
-    client.println("Reading from TCP connection");
-    packet = client.readStringUntil('\0');  
+    #if DEBUG
+        client.println("Reading from TCP connection");
+    #endif
+    packet = client.readStringUntil(TCP_END_OF_TRANSMISSION);  
     #if DEBUG
         Serial.println("Packet end received");
     #endif
@@ -135,7 +138,7 @@ void Connection::parsePacket(String string){
     uint16_t beginPos = 0;
     uint16_t endPos = 0;
     String temp;
-    while(i < MAX_TCP_MSG_SIZE && string[i] != '\3' && string[i] != '\4'){
+    while(i < MAX_TCP_MSG_SIZE && string[i] != TCP_END_OF_TRANSMISSION && string[i] != TCP_SLEEP_COMMAND){
         if(string[i] == delimiter){
             endPos = i;
             temp = string.substring(beginPos, endPos);
@@ -143,7 +146,7 @@ void Connection::parsePacket(String string){
             stringPosition++;
             beginPos = endPos + 1;
         }
-        if(string[i] == '\4'){
+        if(string[i] == TCP_SLEEP_COMMAND){
             evening = YES;
             break;
         }

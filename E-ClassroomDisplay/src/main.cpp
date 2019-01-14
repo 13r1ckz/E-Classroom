@@ -25,23 +25,33 @@ void setup(){
   while(!Serial);
   state = connection.WiFi_innit(display);
   if(state == 3){
-    Serial.println("Sleeping for 60 min");
+    #if DEBUG
+      Serial.println("Sleeping for 60 min");
+    #endif
     main.setSleep(60, 0);
   }
   if(state == -1){
-    Serial.println("Sleeping for 10 seconds");
+    #if DEBUG
+      Serial.println("Sleeping for 10 seconds");
+    #endif
     main.setSleep(0, 10);
   }
   if(state == -2){
-    Serial.println("Sleeping for 10 seconds");
-    main.setSleep(0, 10);
+	#if DEBUG
+    	Serial.println("Sleeping for 10 seconds");
+    #endif
+	main.setSleep(0, 10);
   }
   display.updateDisplay();
   #if SLEEP
-    //Serial.println("Going to sleep.");
-    main.setSleep(connection.getMin(), connection.getSec());
+  	#if DEBUG
+    	//Serial.println("Going to sleep.");
+    #endif
+	main.setSleep(connection.getMin(), connection.getSec());
   #else
-    Serial.println("Running without sleep mode.");
+	#if DEBUG
+    	Serial.println("Running without sleep mode.");
+	#endif
   #endif
 }
 
