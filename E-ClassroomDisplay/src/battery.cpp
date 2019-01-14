@@ -7,31 +7,30 @@
 // ----------------------------------------------------------------------------
 // Global variables
 // ----------------------------------------------------------------------------
-uint8_t MOSFET = D3;
-uint8_t percentage = 0;
+uint8_t MOSFET = D3; // Mosfet gate trigger pin 
+uint8_t percentage; // Battery percentage 
 // ----------------------------------------------------------------------------
 // Functions
 // ----------------------------------------------------------------------------
-void Battery::batteryPercentage(){
+void Battery::batteryPercentage(){ 
   pinMode(MOSFET, OUTPUT);
   digitalWrite(MOSFET, HIGH);
-  float volt = getVoltage();
-  percentage = (volt - batteryMinVolt) * 100;
+  float volt = getVoltage(); //gets a double back 
+  percentage = (volt - batteryMinVolt) * 100; //voltage minus battery * 100 to get a range between 0 and 100
   digitalWrite(MOSFET, LOW);
 }
 
 float Battery::getVoltage(){
   float sample = 0;
   float volt = 0;
-  for(int i=0;i< 10 ;i++)
+  for(int i=0;i< numberOfMeasurings ;i++)
   {
    sample = sample + analogRead(A0); //read the voltage from the divider circuit
-   delay(5);
+   delay(5); //wait 5 milis for an accurate measuring 
   }
-  sample = sample / 10; 
-  volt = voltReduction * sample * espVoltage/ maxAnalogValue; 
+  sample = sample / numberOfMeasurings; //average of the 10 measurings 
+  volt = voltReduction * sample * espVoltage/ maxAnalogValue; //formula to calculate the battery voltage
   volt = volt - offset;
-  Serial.println(volt);
   return volt;
 }
  uint8_t getBatteryPercentage(){
