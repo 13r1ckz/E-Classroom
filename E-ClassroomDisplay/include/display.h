@@ -23,33 +23,33 @@
 #include <imglib/logov2.h>
 
 /* Defines -------------------------------------------------------------------*/
-#define CS_pin      2   /*CS-D4-GPIO2*/
-#define DC_pin      4   /*DC-D2-GPIO4*/
-#define RST_pin     5   /*RST-D1-GPIO5*/
-#define BUSY_pin    12  /*BUSY-D6-GPIO12*/
-#define baudrate    115200
-#define xOffSetLine 0
-#define xOffSetText 10
-#define yOffSetTime 50
-#define yOffSetText 30
-#define lineWidth   600
-#define lineHeight  3
-#define yLogo       0
-#define xLogo       500
-#define yLine1      135
-#define yLine2      273
-#define yLine3      411
-#define yLecture1   140
-#define yLecture2   278
-#define yRoomNum    90
-#define yRoomName   yRoomNum  + yOffSetText
-#define yL1Time     yLecture1 + yOffSetTime
-#define yL1Name     yL1Time   + yOffSetText
-#define yL1Teacher  yL1Name   + yOffSetText
-#define yL2Time     yLecture2 + yOffSetTime
-#define yL2Name     yL2Time   + yOffSetText
-#define yL2Teacher  yL2Name   + yOffSetText
-#define yTimeFree   441
+#define CS_PIN      2   /*CS-D4-GPIO2*/
+#define DC_PIN      4   /*DC-D2-GPIO4*/
+#define RST_PIN     5   /*RST-D1-GPIO5*/
+#define BUSY_PIN    12  /*BUSY-D6-GPIO12*/
+#define BAUDRATE    115200
+#define X_OFFSET_LINE 0
+#define X_OFFSET_TEXT 10
+#define Y_OFFSET_TIME 50
+#define Y_OFFSET_TEXT 30
+#define LINE_WIDTH   600
+#define LINE_HEIGHT  3
+#define Y_LOGO       0
+#define X_LOGO       500
+#define Y_LINE1      135
+#define Y_LINE2      273
+#define Y_LINE3      411
+#define Y_LECTURE1   140
+#define Y_LECTURE2   278
+#define Y_ROOM_NUM    90
+#define Y_ROOM_NAME   Y_ROOM_NUM  + Y_OFFSET_TEXT
+#define Y_L1_TIME     Y_LECTURE1 + Y_OFFSET_TIME
+#define Y_L1_NAME     Y_L1_TIME   + Y_OFFSET_TEXT
+#define Y_L1_TEACHER  Y_L1_NAME   + Y_OFFSET_TEXT
+#define Y_L2_TIME     Y_LECTURE2 + Y_OFFSET_TIME
+#define Y_L2_NAME     Y_L2_TIME   + Y_OFFSET_TEXT
+#define Y_L2_TEACHER  Y_L2_NAME   + Y_OFFSET_TEXT
+#define Y_TIME_FREE 441
 
 /* Classes -------------------------------------------------------------------*/
 class Display{

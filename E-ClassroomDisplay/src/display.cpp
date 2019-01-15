@@ -5,8 +5,8 @@
 /* Includes ------------------------------------------------------------------*/
 #include "display.h"
 
-GxIO_Class io(SPI, CS_pin, DC_pin, RST_pin);
-GxEPD_Class ePaper(io, RST_pin, BUSY_pin);
+GxIO_Class io(SPI, CS_PIN, DC_PIN, RST_PIN);
+GxEPD_Class ePaper(io, RST_PIN, BUSY_PIN);
 
 // ----------------------------------------------------------------------------
 // Global variables
@@ -30,7 +30,7 @@ String timeFree;
 * @note
 */
 void Display::initDisplay(){
-	ePaper.init(baudrate);
+	ePaper.init(BAUDRATE);
 }
 
 /**
@@ -129,7 +129,7 @@ void Display::setTimeFree(String s){
 * @note
 */
 void Display::drawLogo(){
-	ePaper.drawBitmap(gImage_Logov2, xLogo, yLogo, logo_width, logo_height, GxEPD_BLACK);
+	ePaper.drawBitmap(gImage_Logov2, X_LOGO, Y_LOGO, logo_width, logo_height, GxEPD_BLACK);
 }
 
 /**
@@ -138,9 +138,9 @@ void Display::drawLogo(){
 * @note
 */
 void Display::drawLines(){
-	ePaper.fillRect(xOffSetLine, yLine1, lineWidth, lineHeight, GxEPD_BLACK);
-	ePaper.fillRect(xOffSetLine, yLine2, lineWidth, lineHeight, GxEPD_BLACK);
-	ePaper.fillRect(xOffSetLine, yLine3, lineWidth, lineHeight, GxEPD_BLACK);
+	ePaper.fillRect(X_OFFSET_LINE, Y_LINE1, LINE_WIDTH, LINE_HEIGHT, GxEPD_BLACK);
+	ePaper.fillRect(X_OFFSET_LINE, Y_LINE2, LINE_WIDTH, LINE_HEIGHT, GxEPD_BLACK);
+	ePaper.fillRect(X_OFFSET_LINE, Y_LINE3, LINE_WIDTH, LINE_HEIGHT, GxEPD_BLACK);
 }
 
 /**
@@ -152,11 +152,11 @@ void Display::drawClassroom(){
 	ePaper.setTextColor(GxEPD_BLACK);
 	//Room Number
 	ePaper.setFont(&Roboto_Mono_Bold_100);
-	ePaper.setCursor(xOffSetText, yRoomNum);
+	ePaper.setCursor(X_OFFSET_TEXT, Y_ROOM_NUM);
 	ePaper.print(classroom);
 	//Room name
 	ePaper.setFont(&Roboto_Mono_26);
-	ePaper.setCursor(xOffSetText, yRoomName);
+	ePaper.setCursor(X_OFFSET_TEXT, Y_ROOM_NAME);
 	ePaper.print(classroomText);
 }
 
@@ -169,14 +169,14 @@ void Display::drawLecture1(){
 	ePaper.setTextColor(GxEPD_BLACK);
 	// Time
 	ePaper.setFont(&Roboto_Mono_Bold_48);
-	ePaper.setCursor(xOffSetText, yL1Time);
+	ePaper.setCursor(X_OFFSET_TEXT, Y_L1_TIME);
 	ePaper.print(time1);
 	// Lecture
 	ePaper.setFont(&Roboto_Mono_26);
-	ePaper.setCursor(xOffSetText, yL1Name);
+	ePaper.setCursor(X_OFFSET_TEXT, Y_L1_NAME);
 	ePaper.print(lecture1);
 	// Teacher
-	ePaper.setCursor(xOffSetText, yL1Teacher);
+	ePaper.setCursor(X_OFFSET_TEXT, Y_L1_TEACHER);
 	ePaper.print(teacher1);
 }
 
@@ -189,14 +189,14 @@ void Display::drawLecture2(){
 	ePaper.setTextColor(GxEPD_BLACK);
 	// Time
 	ePaper.setFont(&Roboto_Mono_Bold_48);
-	ePaper.setCursor(xOffSetText, yL2Time);
+	ePaper.setCursor(X_OFFSET_TEXT, Y_L2_TIME);
 	ePaper.print(time2);
 	// Lecture
 	ePaper.setFont(&Roboto_Mono_26);
-	ePaper.setCursor(xOffSetText, yL2Name);
+	ePaper.setCursor(X_OFFSET_TEXT, Y_L2_NAME);
 	ePaper.print(lecture2);
 	// Teacher
-	ePaper.setCursor(xOffSetText, yL2Teacher);
+	ePaper.setCursor(X_OFFSET_TEXT, Y_L2_TEACHER);
 	ePaper.print(teacher2);
 }
 
@@ -209,7 +209,7 @@ void Display::drawFreeFrom(){
 	if(timeFree != NULL){
 		ePaper.setTextColor(GxEPD_BLACK);
 		ePaper.setFont(&Roboto_Mono_26);
-		ePaper.setCursor(xOffSetText, yTimeFree);
+		ePaper.setCursor(X_OFFSET_TEXT, Y_TIME_FREE);
 		ePaper.print("Vrij van ");
 		ePaper.print(timeFree);
 	}
