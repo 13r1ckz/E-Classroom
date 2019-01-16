@@ -210,7 +210,6 @@ void Display::drawFreeFrom(){
 		ePaper.setTextColor(GxEPD_BLACK);
 		ePaper.setFont(&Roboto_Mono_26);
 		ePaper.setCursor(X_OFFSET_TEXT, Y_TIME_FREE);
-		ePaper.print("Vrij van ");
 		ePaper.print(timeFree);
 	}
 }
