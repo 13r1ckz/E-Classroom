@@ -8,7 +8,7 @@ NAME = bin/server
 all: $(OBJS)
 	$(CC) $(LFLAGS) $(OBJS)  -o $(NAME)
 run: all
-	sudo $(NAME) "localhost" "420"
+	sudo $(NAME) "192.168.0.100" "420"
 clean : 
 	\rm bin/*.o $(NAME)
 bin/main.o : src/main.cpp src/main.h src/Server/Server.h   
