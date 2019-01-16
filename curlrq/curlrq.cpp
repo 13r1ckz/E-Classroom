@@ -63,6 +63,8 @@ int main(void){
 	std::cout << std::endl;
 	std::cout << freeFrom << std::endl;
 	std::cout << std::endl;
+	
+	std::cout << lessonTime1 << ";" << lessonTime2 << ";" << lessonName1 << ";" << lessonName2 << ";" << lessonTeachers1 << ";" << lessonTeachers2 << ";" << freeFrom << ";";
 }
 
 // ----------------------------------------------------------------------------
